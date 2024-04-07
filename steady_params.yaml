@@ -1,0 +1,28 @@
+#channel components
+channel_length: 50 #distance between server and client in km
+p_loss_length: 0.2  #Photon (survival) loss probability per channel length [dB/km] for the quantum channel
+
+#parameters related to server measurements:
+prob_error_0: 0 #(float) Measurement error probability: probability that |0> gives outcome 1
+prob_error_1: 0 #(float)  Measurement error probability: probability that |1> gives outcome 0
+measurement_duration: 100000 #(float)  Time [ns] it takes to perform a single-qubit computational-basis measurement.
+
+#parameters related to gate applications
+single_qubit_rotation_duration: 12000 #(float)  Time [ns] it takes to perform a single-qubit z rotation.
+ms_pi_over_2_duration: 107000 #(float)  Time [ns] it takes to perform a Molmer Sorensen gate with angle pi / 2. Durations for MS gates with larger angles are derived from this number.
+ms_optimization_angle: 1.5707963267948966 #(float) Angle of Molmer Sorensen gate for which the device has been optimized.
+
+#parameters related to itialization and emmission:
+emission_duration: 300 #(float)  Time [ns] it takes to attempt emitting an entangled photon.
+init_depolar_prob: 0 #(float)  Parameter characterizing depolarizing channel that is applied to a qubit when it is initialized
+initialization_duration: 300 #(float)  Time [ns] it takes to initialize a qubit.
+collection_efficiency: 1 #0.3 #(float)  Probability that an entangled photon is successfully emitted from ion trap when attempted
+
+#client errors
+retardation_deviation: 0 #error in waveplate retardation
+fast_axis_tilt: 0.001  #error in wave plate fast axis
+darkcount_rate: 0.03 #(float) dark count probability of photondetectors in the client
+PBS_crosstalk: 0.0001  #probability of crosstalk in polarizing beam splitter resulting in measurement error
+
+init_depolar_prob: 0 #(float) Parameter characterizing depolarizing channel that is applied to a qubit when it is initialized
+collection_efficiency: 1 #0.3 #(float) Probability that an entangled photon is successfully emitted from ion trap when attempted

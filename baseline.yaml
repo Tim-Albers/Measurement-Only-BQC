@@ -1,0 +1,13 @@
+#channel components
+p_loss_init: 0.8675 #Initial probability of losing a photon in the quantum channel once it enters a channel. e.g. due to frequency conversion
+channel_len: 50 #length of the fibre in km
+
+#ion trap (server) errors
+coherence_time: 62000000 # (float)Coherence time of the qubits in ion trap. Qubits in memory decohere according to a collective-dephasing channel characterized by this coherence time. This channel is both strongly correlated between all qubits in memory and non-Markovian.
+
+#parameters related to gate applications
+single_qubit_depolar_prob: 0.02 #(float) Parameter characterizing depolarizing channel that is applied to a qubit when a single-qubit x rotation is performed.
+ms_depolar_prob: 0.1 #(float)Parameter charactherizing depolarizing channel that is applied to all qubits participating in a multi-qubit MS gate, which is able to entangle qubits (this gate is the main ingredient for a Bell-state measurement).
+
+#parameters related to itialization and emmission:
+emission_fidelity: 0.974 #(float)Fidelity of the ion-photon entangled state directly after emitting a photon

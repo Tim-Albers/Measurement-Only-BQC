@@ -474,7 +474,7 @@ def main():
             exit(1)
     else:
         print('No input dict was provided, so take baseline as default')
-        baseline_yaml = "/home/tim/CODE/Measurement-Only-BQC/baseline.yaml"
+        baseline_yaml = "/home/timalbers/CODE/Measurement-Only-BQC/baseline.yaml"
         with open(baseline_yaml) as f:
             default_dict = yaml.load(f, Loader=SafeLoader)
         args.opt_params = default_dict

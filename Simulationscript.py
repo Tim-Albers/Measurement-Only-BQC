@@ -26,7 +26,7 @@ from instructions_local import XX
 from argparse import ArgumentParser
 import ast
 
-steady_param_yaml = "/home/tim/CODE/Measurement-Only-BQC/steady_params.yaml" # Path to yaml file containing the paramters that are not varied over
+steady_param_yaml = "/home/timalbers/CODE/Measurement-Only-BQC/steady_params.yaml" # Path to yaml file containing the paramters that are not varied over
 
 with open(steady_param_yaml) as f: #find parameters as stored in the yaml file
     steady_params = yaml.load(f, Loader=SafeLoader)

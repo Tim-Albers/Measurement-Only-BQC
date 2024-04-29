@@ -494,7 +494,7 @@ def convert_seconds(total_seconds):
     total_seconds %= 3600                # Update total_seconds to the remainder
     minutes = total_seconds // 60        # Calculate the number of minutes
     seconds = total_seconds % 60         # Calculate the number of remaining seconds
-    return f"Runtime: {days} days, {hours} hours, {minutes} minutes, {seconds} seconds"
+    return f"Runtime: {int(days)} days, {int(hours)} hours, {int(minutes)} minutes, {round(seconds, 2)} seconds"
 
 if __name__ == "__main__":
     main()

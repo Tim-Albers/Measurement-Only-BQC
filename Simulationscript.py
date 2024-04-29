@@ -485,7 +485,7 @@ def main():
     run_experiment(I=I, G=G, mbqc_bases=args.mbqc_bases, opt_params=args.opt_params, run_amount=args.run_amount)
     t2 = time.time()
     print("Runs: ", args.run_amount)
-    print("Time taken: ", t2-t1)
+    print(f"Time taken: {t2-t1} s")
 
 if __name__ == "__main__":
     main()

@@ -6,6 +6,7 @@ Created on Mon Jan  9 10:20:37 2023
 @author: janice
 """
 import numpy as np
+import time
 import netsquid as ns
 import netsquid.components.instructions as instr
 from netsquid.components.qprocessor import PhysicalInstruction
@@ -459,6 +460,7 @@ def run_experiment(I, G, mbqc_bases, opt_params, run_amount):
     return result
 
 def main():
+    t1 = time.time()
     # Parse the input argument
     parser = ArgumentParser()
     parser.add_argument('--opt_params', type=str, help="Input dictionary as a string", required=False)
@@ -481,6 +483,9 @@ def main():
     I = 2
     G = [[0,1]]
     run_experiment(I=I, G=G, mbqc_bases=args.mbqc_bases, opt_params=args.opt_params, run_amount=args.run_amount)
+    t2 = time.time()
+    print("Runs: ", args.run_amount)
+    print("Time taken: ", t2-t1)
 
 if __name__ == "__main__":
     main()

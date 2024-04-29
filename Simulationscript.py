@@ -485,7 +485,16 @@ def main():
     run_experiment(I=I, G=G, mbqc_bases=args.mbqc_bases, opt_params=args.opt_params, run_amount=args.run_amount)
     t2 = time.time()
     print("Runs: ", args.run_amount)
-    print(f"Time taken: {t2-t1} s")
+    print(convert_seconds(t2-t1))
+
+def convert_seconds(total_seconds):
+    days = total_seconds // (24 * 3600)  # Calculate the number of days
+    total_seconds %= (24 * 3600)         # Update total_seconds to the remainder
+    hours = total_seconds // 3600        # Calculate the number of hours
+    total_seconds %= 3600                # Update total_seconds to the remainder
+    minutes = total_seconds // 60        # Calculate the number of minutes
+    seconds = total_seconds % 60         # Calculate the number of remaining seconds
+    return f"Runtime: {days} days, {hours} hours, {minutes} minutes, {seconds} seconds"
 
 if __name__ == "__main__":
     main()

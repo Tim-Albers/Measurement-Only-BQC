@@ -1,7 +1,7 @@
 #channel components
 # p_loss_init = 1 - server_efficiency = 1 - (emission_probability * frequency_conversion_efficiency * detector_efficiency) 
 #p_loss_init: 0.8675 #Initial probability of losing a photon in the quantum channel once it enters a channel. e.g. due to frequency conversion
-p_loss_init: 0.8847 #After taking detector efficiency into account
+p_loss_init: 0.8847 #Initial probability of losing a photon in the quantum channel once it enters a channel. e.g. due to frequency conversion (After taking detector efficiency into account)
 channel_len: 50 #length of the fibre in km
 
 #ion trap (server) errors

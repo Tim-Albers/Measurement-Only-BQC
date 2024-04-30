@@ -21,7 +21,8 @@ collection_efficiency: 1 #0.3 #(float)  Probability that an entangled photon is 
 #client errors
 retardation_deviation: 0 #error in waveplate retardation
 fast_axis_tilt: 0.001  #error in wave plate fast axis
-darkcount_rate: 0.03 #(float) dark count probability of photondetectors in the client SHOULD BE PROBABILTY
+darkcount_rate: 1500 #(float) dark count rate of photondetectors in the client (Hz)
+darkcount_prob: 0.00001875 #(float) dark count probability of photondetectors in the client 
 PBS_crosstalk: 0.0001  #probability of crosstalk in polarizing beam splitter resulting in measurement error
 
 init_depolar_prob: 0 #(float) Parameter characterizing depolarizing channel that is applied to a qubit when it is initialized

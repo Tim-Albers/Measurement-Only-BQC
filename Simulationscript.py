@@ -33,7 +33,7 @@ with open(steady_param_yaml) as f: #find parameters as stored in the yaml file
     steady_params = yaml.load(f, Loader=SafeLoader)
 
 def create_ClientProcessor(I):
-    darkcount_noise_model = DepolarNoiseModel(depolar_rate=steady_params["darkcount_rate"])
+    darkcount_noise_model = DepolarNoiseModel(depolar_rate=steady_params["darkcount_prob"], time_independent=True)
     phys_instrs = [PhysicalInstruction(instr.INSTR_UNITARY, duration=2),
                    PhysicalInstruction(instr.IMeasureFaulty(name='faulty client measurement',
                                                             p0=steady_params['PBS_crosstalk'],

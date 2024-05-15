@@ -457,7 +457,8 @@ def run_experiment(I, G, fibre_length, mbqc_bases, opt_params, run_amount):
         ns.sim_run()
         resses.append(s[-1]) # Decoded outcome of the final measurement is the output of the computation
     result = sum(resses)/len(resses) # Average of per-iteration outcomes
-    print(f"--------------------\nLength: {fibre_length} km:\nResult: {result} +/- {np.std(resses):.3f}")
+    confidence = np.sqrt(np.log(2/0.05)/(2*run_amount)) # 95% confidence interval
+    print(f"--------------------\nLength: {fibre_length} km:\nResult: {result} +/- {confidence}")
     return result
 
 def main():

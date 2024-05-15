@@ -391,7 +391,10 @@ def networksetupproc(I, opt_params):
     qproc_c = create_ClientProcessor(I)
     client.add_subcomponent(qproc_c)
 
-    fibre_length = steady_params['channel_length']
+    if args.channel_length:
+        fibre_length = args.channel_length
+    else:
+        fibre_length = steady_params['channel_length']
     loss_length = steady_params['p_loss_length']
     #Add quantum connection with quantum channel & connect the ports
     qcon = Connection("Qconnection")
@@ -456,7 +459,7 @@ def run_experiment(I, G, mbqc_bases, opt_params, run_amount):
         ns.sim_run()
         resses.append(s[-1]) # Decoded outcome of the final measurement is the output of the computation
     result = sum(resses)/len(resses) # Average of per-iteration outcomes
-    print(result)
+    print(f"--------------------\nResults for {fibre_length} km:\n{result}\n--------------------")
     return result
 
 def main():
@@ -464,6 +467,7 @@ def main():
     # Parse the input argument
     parser = ArgumentParser()
     parser.add_argument('--opt_params', type=str, help="Input dictionary as a string", required=False)
+    parser.add_argument('--channel_length', type=float, help="Length of the quantum channel in km", required=False)
     parser.add_argument('--run_amount', type=int, help="Number of iterations the simulation is repeater for (=number of test rounds)", required=True)
     parser.add_argument('--mbqc_bases', nargs='+', type=float)
     args = parser.parse_args()

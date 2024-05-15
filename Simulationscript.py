@@ -486,10 +486,12 @@ def main():
         args.opt_params = default_dict
     I = 2
     G = [[0,1]]
+    print("Running experiment...")
     run_experiment(I=I, G=G, mbqc_bases=args.mbqc_bases, opt_params=args.opt_params, run_amount=args.run_amount)
     t2 = time.time()
     print("Runs: ", args.run_amount)
     print(convert_seconds(t2-t1))
+    print("--------------------")
 
 def convert_seconds(total_seconds):
     days = total_seconds // (24 * 3600)  # Calculate the number of days

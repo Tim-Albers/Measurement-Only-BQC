@@ -363,7 +363,7 @@ class ClientProtocol(NodeProtocol):
             yield self.await_port_input(self.node.ports["cin_c"])
 
 
-def networksetupproc(I, opt_params):
+def networksetupproc(I, opt_params, fibre_length):
     """
     Creates setup with a trapped-ion quantum server and a photonic client, with one quantum channel and two classical channels
     (one classical channel is just used for qubit IDs, this was just easier in coding).
@@ -391,10 +391,8 @@ def networksetupproc(I, opt_params):
     qproc_c = create_ClientProcessor(I)
     client.add_subcomponent(qproc_c)
 
-    if args.channel_length:
-        fibre_length = args.channel_length
-    else:
-        fibre_length = steady_params['channel_length']
+    
+    # fibre_length = steady_params['channel_length']
     loss_length = steady_params['p_loss_length']
     #Add quantum connection with quantum channel & connect the ports
     qcon = Connection("Qconnection")
@@ -437,7 +435,7 @@ theta = [] #measurement angles used by the client for RSP
 r = [] #random bit used to one-time-pad the angles that the Client sends to the Server for computation
 s = [] #decoded measurment MBQC outcomes (= b(j)+r(j) with b(j) meas results as send by Server)
 attempts = []
-def run_experiment(I, G, mbqc_bases, opt_params, run_amount):
+def run_experiment(I, G, fibre_length, mbqc_bases, opt_params, run_amount):
     resses= []
     for i in range(run_amount):
         # Clear everything 
@@ -448,7 +446,7 @@ def run_experiment(I, G, mbqc_bases, opt_params, run_amount):
         s.clear()
         attempts.clear()
         # Set up the network and processors
-        network = networksetupproc(I=I, opt_params=opt_params)
+        network = networksetupproc(I=I, opt_params=opt_params, fibre_length=fibre_length)
         server = network.get_node("server")
         client = network.get_node("client")
         server.subcomponents["ion_trap_quantum_communication_device"].reset()
@@ -487,7 +485,7 @@ def main():
     I = 2
     G = [[0,1]]
     print("Running experiment...")
-    run_experiment(I=I, G=G, mbqc_bases=args.mbqc_bases, opt_params=args.opt_params, run_amount=args.run_amount)
+    run_experiment(I=I, G=G, fibre_length=args.channel_length, mbqc_bases=args.mbqc_bases, opt_params=args.opt_params, run_amount=args.run_amount)
     t2 = time.time()
     print("Runs: ", args.run_amount)
     print(convert_seconds(t2-t1))

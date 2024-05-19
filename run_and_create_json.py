@@ -122,7 +122,7 @@ def generate_json(file_name, uid, sim_args):
     output_file_path = os.path.join(os.path.dirname(__file__), folder_name, 'output.json')
 
     data = {
-        "author": "Janice van Dam",
+        "author": "Janice van Dam & Tim Albers",
         "dataset_type": "simulation",
         "ran": current_time,
         "uid": uid,

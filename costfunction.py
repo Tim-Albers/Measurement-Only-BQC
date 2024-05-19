@@ -4,7 +4,7 @@ BQC_main.py calls on this file (costfunction.py) to find the cost of a given set
 Two files need to be directed to: the simulation script ('script_path') and a yaml file with baseline parameters ('baseline_yaml')
 Some parameters should be defined at the start of this file:
 
-num_runs: (int)
+num_runs: (int)----------------------------------------------------------------------------------------------------
     Times the simulation is repeated - determines confidence interval of average outcome based on Hoeffding's bound
 run_amount: (int)
     The simulation is run in batches of run_amount to limit memory usage
@@ -174,8 +174,8 @@ if __name__ == "__main__":
     parameter_values = [args.p_loss_init, args.coherence_time, args.single_qubit_depolar_prob, args.ms_depolar_prob, args.emission_fidelity]
     num_runs = 20000  #18444 #73777 # Times the simulation is repeated - determines confidence interval of average outcome based on Hoeffding's bound
     run_amount = 10000 # The simulation is run in batches of run_amount to limit memory usage
-    script_path = '/home/jvdam/measurement-only-vqbc/BQC_iontrap.py'
-    baseline_path = '/home/jvdam/measurement-only-vqbc/baseline.yaml'
+    script_path = '/home/timalbers/CODE/Measurement-Only-BQC/Simulationscript.py'
+    baseline_path = '/home/timalbers/CODE/Measurement-Only-BQC/baseline.yaml'
     # Run the "simulation"
     print(f"Input: {args.p_loss_init},{args.coherence_time}, {args.single_qubit_depolar_prob}, {args.ms_depolar_prob}, {args.emission_fidelity}.\n")
     output_value, error_prob, avg_runtime = costfunction(p_loss_init=args.p_loss_init, coherence_time=args.coherence_time, single_qubit_depolar_prob=args.single_qubit_depolar_prob,

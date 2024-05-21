@@ -80,16 +80,16 @@ def BQC_pre():
         ],
         opt_info_list=[
             OptimizationInfo(
-                name="GA",
+                name="GA",                      # name of the optimization algorithm (Genetic Algorithm)
                 opt_parameters={
-                    "num_generations": 15,     # number of iterations of the algorithm
-                    # "num_points": 10,            # number of points per param to re-create , now determined by initial
+                    "num_generations": 15,      # number of iterations of the algorithm
+                    # "num_points": 10,         # number of points per param to re-create , now determined by initial
                     "num_parents_mating": 8,    # number of points taken of each generation to go onto the next generation
-                    "mutation_probability": .2,
+                    "mutation_probability": .2, # probability of mutation
                     "refinement_factors": [.5, .5],
-                    "logging_level": 1,
+                    "logging_level": 1,         # logging level of the algorithm
                 },
-                blackbox_optimization=True, # Removed the blackbox optimization to the optimization algorithm
+                blackbox_optimization=True, # Defined the blackbox optimization to the optimization algorithm
                 is_active=True)]
     )
     with open('optimization_outcomes', 'a') as file:
@@ -108,6 +108,7 @@ def remove_files_after_run():
         shutil.rmtree(os.path.join(os.getcwd(), d))
 
 def main():
+    print("RUNNING BQC_MAIN.PY")
     experiment = BQC_pre()
     BQC_executor = Executor(experiment=experiment)
 

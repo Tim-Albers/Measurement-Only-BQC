@@ -162,6 +162,7 @@ def costfunction(p_loss_init, coherence_time, single_qubit_depolar_prob, ms_depo
 
 
 if __name__ == "__main__":
+    print("RUNNING COSTFUNCTION.PY")
     # Parse the input argument
     parser = ArgumentParser()
     parser.add_argument('--filebasename', type=str)

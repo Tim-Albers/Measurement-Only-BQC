@@ -176,7 +176,7 @@ def main():
     if json_data is not None and output_file_path is not None:
         # Save to the specified file path
         save_json(json_data, output_file_path)
-        print("DONE! \nJSON file saved to:", output_file_path)
+        print("\nDONE! \nJSON file saved to:", output_file_path)
         print("\n========================================================================================================")
         print("========================================================================================================\n")
 

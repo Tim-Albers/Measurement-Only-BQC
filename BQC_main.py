@@ -93,7 +93,7 @@ def BQC_pre():
                 is_active=True)]
     )
     with open('optimization_outcomes', 'a') as file:
-        file.write(f"Optimization parameters: {BQC_experiment.optimization_information_list[0].parameters}\n")
+        file.write(f"Optimization parameters: {BQC_experiment.opt_info_list[0].parameters}\n")
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         file.write(f"Run on: {dt_string}\n")

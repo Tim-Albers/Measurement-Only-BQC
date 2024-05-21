@@ -154,7 +154,7 @@ def save_json(data, filename):
 
 def main():
     print("\n========================================================================================================")
-    print("============================Running Python file and generating JSON metadata============================")
+    print("============================Running Python file and generating JSON metadata============================\n")
     parser = argparse.ArgumentParser(description='Generate JSON file with metadata.')
     parser.add_argument('--file', help='Name of the Python file to run and include in metadata', required=True)
     parser.add_argument('--uid', help='UID for the folder and JSON file', required=True)
@@ -177,8 +177,8 @@ def main():
         # Save to the specified file path
         save_json(json_data, output_file_path)
         print("DONE! \nJSON file saved to:", output_file_path)
-        print("========================================================================================================")
-        print("========================================================================================================")
+        print("\n========================================================================================================")
+        print("========================================================================================================\n")
 
 
 if __name__ == "__main__":

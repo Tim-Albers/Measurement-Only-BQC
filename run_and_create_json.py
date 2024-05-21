@@ -69,12 +69,9 @@ def run_python_file(file_name, uid, sim_args):
     except SubprocessError as e:
         print(f"Error running {file_name}: {e}")
     
-    end_time = time.time()
-
-    # Calculate elapsed time in seconds
-    elapsed_seconds = end_time - start_time
-
     # Convert elapsed time to hours and minutes
+    end_time = time.time()
+    elapsed_seconds = end_time - start_time
     elapsed_hours = int(elapsed_seconds // 3600)
     elapsed_minutes = int((elapsed_seconds % 3600) // 60)
 

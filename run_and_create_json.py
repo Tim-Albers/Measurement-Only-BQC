@@ -59,7 +59,7 @@ def run_python_file(file_name, uid, sim_args):
     start_time = time.time()
     if file_name == 'finder.py':
         command = ['python3', file_name, '--parameter', sim_args[0], '--num_runs', sim_args[1], '--lower_est', sim_args[2], '--upper_est', sim_args[3]]
-        opt_params=None
+        opt_params = None
     else:
         command = ['python', file_name]
     try:
@@ -102,6 +102,7 @@ def run_python_file(file_name, uid, sim_args):
     return None
 
 def generate_json(file_name, uid, sim_args):
+    opt_params = None
     current_time = datetime.now().strftime('%a %b %d %H:%M:%S %Z %Y')
     
     repo_url, commit_hash = get_git_info()

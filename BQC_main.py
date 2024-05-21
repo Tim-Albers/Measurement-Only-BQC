@@ -113,7 +113,7 @@ def main():
 
     experiment.parse_slurm_arg("BQC_main.py")
 
-    for i in range(experiment.optimization_information_list[0].parameters["num_generations"]):
+    for i in range(experiment.opt_info_list[0].opt_parameters["num_generations"]):
 #        assert BQC_executor.optimization_alg.ga_instance.generations_completed == i   # sanity check
         # todo : the grid based point generation is still somehow bugged
         BQC_executor.run(step_number=i, evolutionary_point_generation=True)

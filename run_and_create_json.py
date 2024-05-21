@@ -102,7 +102,6 @@ def run_python_file(file_name, uid, sim_args):
     return None
 
 def generate_json(file_name, uid, sim_args):
-    opt_params = None
     current_time = datetime.now().strftime('%a %b %d %H:%M:%S %Z %Y')
     
     repo_url, commit_hash = get_git_info()
@@ -121,6 +120,8 @@ def generate_json(file_name, uid, sim_args):
 
     # Specify the output file path
     output_file_path = os.path.join(os.path.dirname(__file__), folder_name, 'output.json')
+
+    opt_params = None # MAYBE THIS IS BASELINE.YAML??
 
     data = {
         "author": "Janice van Dam & Tim Albers",

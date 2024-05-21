@@ -89,7 +89,7 @@ def BQC_pre():
                     "refinement_factors": [.5, .5],
                     "logging_level": 1,
                 },
-                blackbox_optimization=False, # Removed the blackbox optimization to the optimization algorithm
+                blackbox_optimization=True, # Removed the blackbox optimization to the optimization algorithm
                 is_active=True)]
     )
     with open('optimization_outcomes', 'a') as file:

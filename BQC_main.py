@@ -93,7 +93,7 @@ def BQC_pre():
                 is_active=True)]
     )
     with open('optimization_outcomes', 'a') as file:
-        file.write(f"Optimization parameters: {BQC_experiment.opt_info_list[0].parameters}\n")
+        file.write(f"Optimization parameters: {BQC_experiment.opt_info_list[0].opt_parameters}\n")
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         file.write(f"Run on: {dt_string}\n")
@@ -119,7 +119,7 @@ def main():
         BQC_executor.run(step_number=i, evolutionary_point_generation=True)
 
     solution = BQC_executor.optimizer.suggest_best_solution()
-    print(f"Optimization parameters: {experiment.optimization_information_list[0].parameters}\n")
+    print(f"Optimization parameters: {experiment.opt_info_list[0].opt_parameters}\n")
     print("Solution: ", solution)
     solution_file_path = os.path.join('output', 'solution.txt')
     with open(solution_file_path, 'w') as file:

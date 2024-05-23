@@ -462,7 +462,8 @@ def run_experiment(I, G, fibre_length, mbqc_bases, opt_params, run_amount):
     result = sum(resses)/len(resses) # Average of per-iteration outcomes
     confidence = np.sqrt(np.log(2/0.05)/(2*run_amount)) # 95% confidence interval
     avg_runtime =  np.average(run_times) # Average runtime in ms
-    print(f"--------------------\nLength: {fibre_length} km:\nResult: {result} +/- {confidence}")
+    # print(f"--------------------\nLength: {fibre_length} km:\nResult: {result} +/- {confidence}")
+    print(f"{result},{avg_runtime}")
     return result, avg_runtime
 
 def main():
@@ -490,12 +491,12 @@ def main():
     I = 2
     G = [[0,1]]
     MBQC_bases = [1.5707, -1.5708]
-    print("Running experiment...")
+    # print("Running experiment...")
     run_experiment(I=I, G=G, fibre_length=steady_params["channel_length"], mbqc_bases=MBQC_bases, opt_params=args.opt_params, run_amount=args.run_amount)
     t2 = time.time()
-    print("Runs: ", args.run_amount)
-    print(convert_seconds(t2-t1))
-    print("--------------------")
+    # print("Runs: ", args.run_amount)
+    # print(convert_seconds(t2-t1))
+    # print("--------------------")
 
 def convert_seconds(total_seconds):
     days = total_seconds // (24 * 3600)  # Calculate the number of days

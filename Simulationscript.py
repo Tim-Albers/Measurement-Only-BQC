@@ -466,9 +466,9 @@ def main():
     # Parse the input argument
     parser = ArgumentParser()
     parser.add_argument('--opt_params', type=str, help="Input dictionary as a string", required=False)
-    parser.add_argument('--channel_length', type=float, help="Length of the quantum channel in km", required=False)
+    # parser.add_argument('--channel_length', type=float, help="Length of the quantum channel in km", required=False)
     parser.add_argument('--run_amount', type=int, help="Number of iterations the simulation is repeater for (=number of test rounds)", required=True)
-    parser.add_argument('--mbqc_bases', nargs='+', type=float)
+    # parser.add_argument('--mbqc_bases', nargs='+', type=float)
     args = parser.parse_args()
     if args.opt_params:
         try:
@@ -485,8 +485,9 @@ def main():
         args.opt_params = default_dict
     I = 2
     G = [[0,1]]
+    MBQC_bases = [1.5707, -1.5708]
     print("Running experiment...")
-    run_experiment(I=I, G=G, fibre_length=args.channel_length, mbqc_bases=args.mbqc_bases, opt_params=args.opt_params, run_amount=args.run_amount)
+    run_experiment(I=I, G=G, fibre_length=steady_params["channel_length"], mbqc_bases=MBQC_bases, opt_params=args.opt_params, run_amount=args.run_amount)
     t2 = time.time()
     print("Runs: ", args.run_amount)
     print(convert_seconds(t2-t1))

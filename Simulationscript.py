@@ -434,7 +434,7 @@ m = [] #measurement results of RSP measurements by Client
 theta = [] #measurement angles used by the client for RSP
 r = [] #random bit used to one-time-pad the angles that the Client sends to the Server for computation
 s = [] #decoded measurment MBQC outcomes (= b(j)+r(j) with b(j) meas results as send by Server)
-attempts = []
+run_times = []
 def run_experiment(I, G, fibre_length, mbqc_bases, opt_params, run_amount):
     resses= []
     for i in range(run_amount):
@@ -444,7 +444,7 @@ def run_experiment(I, G, fibre_length, mbqc_bases, opt_params, run_amount):
         theta.clear()
         r.clear()
         s.clear()
-        attempts.clear()
+        run_times.clear()
         # Set up the network and processors
         network = networksetupproc(I=I, opt_params=opt_params, fibre_length=fibre_length)
         server = network.get_node("server")
@@ -455,11 +455,13 @@ def run_experiment(I, G, fibre_length, mbqc_bases, opt_params, run_amount):
         ClientProtocol(client).start(I, G, mbqc_bases)
         ServerProtocol(server).start(opt_params=opt_params)
         ns.sim_run()
+        run_times.append(1000*ns.sim_time)
         resses.append(s[-1]) # Decoded outcome of the final measurement is the output of the computation
     result = sum(resses)/len(resses) # Average of per-iteration outcomes
     confidence = np.sqrt(np.log(2/0.05)/(2*run_amount)) # 95% confidence interval
+    avg_runtime =  np.average(run_times) # Average runtime in ms
     print(f"--------------------\nLength: {fibre_length} km:\nResult: {result} +/- {confidence}")
-    return result
+    return result, avg_runtime
 
 def main():
     t1 = time.time()

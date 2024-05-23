@@ -7,6 +7,7 @@ from argparse import ArgumentParser
 
 
 if __name__ == "__main__":
+    print("RUNNING ANALYSE_FUNCTION_OUTPUT.PY")
     # Create source_directory
     parser = ArgumentParser()
     parser.add_argument('--step', required=False, type=str,

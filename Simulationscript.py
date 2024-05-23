@@ -435,9 +435,11 @@ theta = [] #measurement angles used by the client for RSP
 r = [] #random bit used to one-time-pad the angles that the Client sends to the Server for computation
 s = [] #decoded measurment MBQC outcomes (= b(j)+r(j) with b(j) meas results as send by Server)
 run_times = []
+attempts = []
 def run_experiment(I, G, fibre_length, mbqc_bases, opt_params, run_amount):
     resses= []
     for i in range(run_amount):
+        attempts.clear()
         # Clear everything 
         ns.sim_reset()
         m.clear()

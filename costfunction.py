@@ -123,7 +123,7 @@ def costfunction(p_loss_init, coherence_time, single_qubit_depolar_prob, ms_depo
     """Returns cost associated with a given set of hardware parameters."""
     # Weights associate with cost function (w1>>w2 to ensure requirement being met)
     w1 = 10**5
-    w2 = 1
+    w2 = -1
     input_value_dict = {"p_loss_init": p_loss_init,
                         "coherence_time": coherence_time,
                         "single_qubit_depolar_prob": single_qubit_depolar_prob,
@@ -154,9 +154,10 @@ def costfunction(p_loss_init, coherence_time, single_qubit_depolar_prob, ms_depo
             Hc += param_cost
             print(f"{param_name} cost = {param_cost}")
         return Hc
-    error_prob, avg_runtime = find_error_prob(num_runs, run_amount, input_value_dict, script_path) # Average error probability as returned from simulation script
+    succes_prob, avg_runtime = find_error_prob(num_runs, run_amount, input_value_dict, script_path) # Average error probability as returned from simulation script
+    error_prob = 1 - succes_prob # Error probability
     hardware_cost = Hc(TO_PROB_NO_ERROR_FUNCTION, **input_value_dict) # Hardware cost
-    cost = w1*(1 + (error_prob - 0.25)**2)*np.heaviside(error_prob - 0.25, 0) + w2*hardware_cost # Total cost
+    cost = w1*(1 + (error_prob - 0.3)**2)*np.heaviside(error_prob - 0.3, 0) + w2*hardware_cost # Total cost
     print("cost calculated: ", cost)
     return cost, error_prob, avg_runtime
 

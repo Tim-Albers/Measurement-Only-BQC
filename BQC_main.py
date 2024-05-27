@@ -29,6 +29,7 @@ def BQC_pre():
         parameters=[
             Parameter(
                 name="p_loss_init",
+                #param_range=[0,0.8675],
                 param_range=[0,0.8675],
                 number_points=3,
                 distribution="uniform",
@@ -39,6 +40,7 @@ def BQC_pre():
             ),
             Parameter(
                 name="coherence_time",
+                #param_range=[62000000, 1000000000],
                 param_range=[62000000, 1000000000],
                 number_points=4,
                 distribution="uniform",
@@ -49,6 +51,7 @@ def BQC_pre():
             ),
             Parameter(
                 name="single_qubit_depolar_prob",
+                #param_range=[0, 0.02],
                 param_range=[0, 0.02],
                 number_points=2,
                 distribution="uniform",
@@ -59,6 +62,7 @@ def BQC_pre():
             ),
             Parameter(
                 name="ms_depolar_prob",
+                #param_range=[0, 0.1],
                 param_range=[0, 0.1],
                 number_points=3,
                 distribution="uniform",
@@ -69,6 +73,7 @@ def BQC_pre():
             ),
             Parameter(
                 name="emission_fidelity",
+                #param_range=[0.974, 1],
                 param_range=[0.974, 1],
                 number_points=2,
                 distribution="uniform",

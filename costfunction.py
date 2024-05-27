@@ -122,7 +122,7 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
 def costfunction(p_loss_init, coherence_time, single_qubit_depolar_prob, ms_depolar_prob, emission_fidelity, script_path, baseline_path, num_runs, run_amount):
     """Returns cost associated with a given set of hardware parameters."""
     # Weights associate with cost function (w1>>w2 to ensure requirement being met)
-    w1 = 10**5
+    w1 = 10**7
     w2 = -1
     input_value_dict = {"p_loss_init": p_loss_init,
                         "coherence_time": coherence_time,

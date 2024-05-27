@@ -29,50 +29,50 @@ def BQC_pre():
         parameters=[
             Parameter(
                 name="p_loss_init",
-                param_range=[0,0.8675],
+                param_range=[0,1],
                 number_points=3,
                 distribution="uniform",
-                constraints={'low': 0, 'high': 0.8675},
+                constraints={'low': 0, 'high': 1},
                 weights=None,   # todo not implemented
                 parameter_active=True,
                 param_type="continuous"
             ),
             Parameter(
                 name="coherence_time",
-                param_range=[62000000, 1000000000],
+                param_range=[10000000, 2000000000],
                 number_points=4,
                 distribution="uniform",
-                constraints={'low': 62000000, 'high': 1000000000},
+                constraints={'low': 10000000, 'high': 2000000000},
                 weights=None,
                 parameter_active=True,
                 param_type="continuous"
             ),
             Parameter(
                 name="single_qubit_depolar_prob",
-                param_range=[0, 0.02],
+                param_range=[0, 0.5],
                 number_points=2,
                 distribution="uniform",
-                constraints={'low': 0, 'high': 0.02},
+                constraints={'low': 0, 'high': 0.5},
                 weights=None,
                 parameter_active=True,
                 param_type="continuous"
             ),
             Parameter(
                 name="ms_depolar_prob",
-                param_range=[0, 0.1],
+                param_range=[0, 0.5],
                 number_points=3,
                 distribution="uniform",
-                constraints={'low': 0, 'high': 0.1},
+                constraints={'low': 0, 'high': 0.5},
                 weights=None,
                 parameter_active=True,
                 param_type="continuous"
             ),
             Parameter(
                 name="emission_fidelity",
-                param_range=[0.974, 1],
+                param_range=[0.5, 1],
                 number_points=2,
                 distribution="uniform",
-                constraints={'low': 0.974, 'high': 1},
+                constraints={'low': 0.5, 'high': 1},
                 weights=None,
                 parameter_active=True,
                 param_type="continuous"

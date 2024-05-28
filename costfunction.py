@@ -180,7 +180,7 @@ if __name__ == "__main__":
     baseline_path = '/home/timalbers/CODE/Measurement-Only-BQC/baseline.yaml'
     # Run the "simulation"
     print(f"Input: {args.p_loss_init},{args.coherence_time}, {args.single_qubit_depolar_prob}, {args.ms_depolar_prob}, {args.emission_fidelity}.\n")
-    output_value, error_prob, avg_runtime = costfunction(p_loss_init=args.p_loss_init, coherence_time=args.coherence_time, single_qubit_depolar_prob=args.single_qubit_depolar_prob,
+    output_value, succes_prob, avg_runtime = costfunction(p_loss_init=args.p_loss_init, coherence_time=args.coherence_time, single_qubit_depolar_prob=args.single_qubit_depolar_prob,
                                 ms_depolar_prob=args.ms_depolar_prob, emission_fidelity=args.emission_fidelity, script_path=script_path, baseline_path=baseline_path,
                                 num_runs=num_runs, run_amount=run_amount)
     print(f"Output of costfunction is {output_value}.")
@@ -191,4 +191,4 @@ if __name__ == "__main__":
         print('writing to csv...', csv_filename)
         csv_writer = csv.writer(csv_file, delimiter=' ')
         csv_writer.writerow(['C', 'p_loss_init', 'coherence_time', 'single_qubit_depolar_prob', 'ms_depolar_prob', 'emission_fidelity', 'error_prob', 'num_runs', 'average_runtime [ns]'])
-        csv_writer.writerow([output_value, args.p_loss_init, args.coherence_time, args.single_qubit_depolar_prob, args.ms_depolar_prob, args.emission_fidelity, error_prob, num_runs, avg_runtime])
+        csv_writer.writerow([output_value, args.p_loss_init, args.coherence_time, args.single_qubit_depolar_prob, args.ms_depolar_prob, args.emission_fidelity, succes_prob, num_runs, avg_runtime])

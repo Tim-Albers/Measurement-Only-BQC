@@ -113,7 +113,7 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
             print(f"Error running the script: {e}")
     avg_outcome = sum(outcomes)/len(outcomes)
     avg_runtime = sum(runtimes)/len(runtimes)
-    print("errorprob: ", avg_outcome)
+    print("succesprob: ", avg_outcome)
     if avg_outcome is not None:
         return avg_outcome, avg_runtime
     else:
@@ -155,11 +155,11 @@ def costfunction(p_loss_init, coherence_time, single_qubit_depolar_prob, ms_depo
             print(f"{param_name} cost = {param_cost}")
         return Hc
     succes_prob, avg_runtime = find_error_prob(num_runs, run_amount, input_value_dict, script_path) # Average error probability as returned from simulation script
-    error_prob = 1 - succes_prob # Error probability
+    #error_prob = 1 - succes_prob # Error probability
     hardware_cost = Hc(TO_PROB_NO_ERROR_FUNCTION, **input_value_dict) # Hardware cost
-    cost = w1*(1 + (error_prob - 0.3)**2)*np.heaviside(error_prob - 0.3, 0) + w2*hardware_cost # Total cost
+    cost = w1*(1 + (succes_prob - 0.7)**2)*np.heaviside(0.7 - succes_prob, 0) + w2*hardware_cost # Total cost
     print("cost calculated: ", cost)
-    return cost, error_prob, avg_runtime
+    return cost, succes_prob, avg_runtime
 
 
 if __name__ == "__main__":

@@ -122,8 +122,10 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
 def costfunction(p_loss_init, coherence_time, single_qubit_depolar_prob, ms_depolar_prob, emission_fidelity, script_path, baseline_path, num_runs, run_amount):
     """Returns cost associated with a given set of hardware parameters."""
     # Weights associate with cost function (w1>>w2 to ensure requirement being met)
-    w1 = 10**5
-    w2 = 1
+    a = 0.7 # Threshold for succes probability
+    w1 = 1e5
+    w2 = 1e1
+    k = 10 
     input_value_dict = {"p_loss_init": p_loss_init,
                         "coherence_time": coherence_time,
                         "single_qubit_depolar_prob": single_qubit_depolar_prob,
@@ -157,7 +159,8 @@ def costfunction(p_loss_init, coherence_time, single_qubit_depolar_prob, ms_depo
     succes_prob, avg_runtime = find_error_prob(num_runs, run_amount, input_value_dict, script_path) # Average error probability as returned from simulation script
     #error_prob = 1 - succes_prob # Error probability
     hardware_cost = Hc(TO_PROB_NO_ERROR_FUNCTION, **input_value_dict) # Hardware cost
-    cost = w1*(1 + (succes_prob - 0.7)**2)*np.heaviside(0.7 - succes_prob, 0) - w2*hardware_cost # Total cost
+    #cost = w1*(1 + (succes_prob - 0.7)**2)*np.heaviside(0.7 - succes_prob, 0) - w2*hardware_cost # Total cost
+    cost = w1 * np.heaviside(a - succes_prob, 0) +  w1 * np.heaviside(succes_prob - a, 1) * np.exp(k*(succes_prob-a)-1)/np.exp(k*(1-a)-1) - w2 * hardware_cost # NEW COSTFUNCTION
     print("cost calculated: ", cost)
     return cost, succes_prob, avg_runtime
 

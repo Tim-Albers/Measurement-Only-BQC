@@ -160,7 +160,8 @@ def costfunction(p_loss_init, coherence_time, single_qubit_depolar_prob, ms_depo
     #error_prob = 1 - succes_prob # Error probability
     hardware_cost = Hc(TO_PROB_NO_ERROR_FUNCTION, **input_value_dict) # Hardware cost
     #cost = w1*(1 + (succes_prob - 0.7)**2)*np.heaviside(0.7 - succes_prob, 0) - w2*hardware_cost # Total cost
-    cost = w1 * np.heaviside(a - succes_prob, 0) +  w1 * np.heaviside(succes_prob - a, 1) * np.exp(k*(succes_prob-a)-1)/np.exp(k*(1-a)-1) - w2 * hardware_cost # NEW COSTFUNCTION
+    #cost = w1 * np.heaviside(a - succes_prob, 0) +  w1 * np.heaviside(succes_prob - a, 1) * np.exp(k*(succes_prob-a)-1)/np.exp(k*(1-a)-1) - w2 * hardware_cost # NEW COSTFUNCTION
+    cost = w1 * np.heaviside(a - succes_prob, 1) - w2 * hardware_cost # NEW COSTFUNCTION 
     print("cost calculated: ", cost)
     return cost, succes_prob, avg_runtime
 

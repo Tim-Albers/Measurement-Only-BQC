@@ -123,7 +123,7 @@ def costfunction(p_loss_init, coherence_time, single_qubit_depolar_prob, ms_depo
     """Returns cost associated with a given set of hardware parameters."""
     # Weights associate with cost function (w1>>w2 to ensure requirement being met)
     a = 0.7 # Threshold for succes probability
-    w1 = 1e5
+    w1 = 1e3
     w2 = 1e1
     k = 10 
     input_value_dict = {"p_loss_init": p_loss_init,
@@ -161,7 +161,7 @@ def costfunction(p_loss_init, coherence_time, single_qubit_depolar_prob, ms_depo
     hardware_cost = Hc(TO_PROB_NO_ERROR_FUNCTION, **input_value_dict) # Hardware cost
     #cost = w1*(1 + (succes_prob - 0.7)**2)*np.heaviside(0.7 - succes_prob, 0) - w2*hardware_cost # Total cost
     #cost = w1 * np.heaviside(a - succes_prob, 0) +  w1 * np.heaviside(succes_prob - a, 1) * np.exp(k*(succes_prob-a)-1)/np.exp(k*(1-a)-1) - w2 * hardware_cost # NEW COSTFUNCTION
-    cost = w1 * np.heaviside(a - succes_prob, 1) - w2 * hardware_cost # NEW COSTFUNCTION 
+    cost =  100 + w1 * np.heaviside(a - succes_prob, 1) - w2 * hardware_cost # NEW COSTFUNCTION 
     print("cost calculated: ", cost)
     return cost, succes_prob, avg_runtime
 
@@ -178,8 +178,8 @@ if __name__ == "__main__":
     parser.add_argument('--emission_fidelity', type=float)
     args = parser.parse_args()
     parameter_values = [args.p_loss_init, args.coherence_time, args.single_qubit_depolar_prob, args.ms_depolar_prob, args.emission_fidelity]
-    num_runs = 100 #20000  #18444 #73777 # Times the simulation is repeated - determines confidence interval of average outcome based on Hoeffding's bound
-    run_amount = 10 #10000 # The simulation is run in batches of run_amount to limit memory usage
+    num_runs = 1000 #20000  #18444 #73777 # Times the simulation is repeated - determines confidence interval of average outcome based on Hoeffding's bound
+    run_amount = 100 #10000 # The simulation is run in batches of run_amount to limit memory usage
     script_path = '/home/timalbers/CODE/Measurement-Only-BQC/Simulationscript.py'
     baseline_path = '/home/timalbers/CODE/Measurement-Only-BQC/baseline.yaml'
     # Run the "simulation"

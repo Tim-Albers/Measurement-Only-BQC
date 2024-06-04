@@ -31,7 +31,7 @@ def BQC_pre():
                 name="p_loss_init",
                 param_range=[0.8846,1],
                 number_points=3,
-                distribution="uniform",
+                distribution="log",
                 constraints={'low': 0.8846, 'high': 1},
                 weights=None,   # todo not implemented
                 parameter_active=True,

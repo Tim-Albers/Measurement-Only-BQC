@@ -29,7 +29,7 @@ def BQC_pre():
         parameters=[
             Parameter(
                 name="p_loss_init",
-                param_range=[0.8846,1],
+                param_range=[0.8846,0.95],
                 number_points=3,
                 distribution="log",
                 constraints={'low': 0.8846, 'high': 0.95},

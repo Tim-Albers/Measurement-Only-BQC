@@ -123,9 +123,9 @@ def costfunction(p_loss_init, coherence_time, single_qubit_depolar_prob, ms_depo
     """Returns cost associated with a given set of hardware parameters."""
     # Weights associate with cost function (w1>>w2 to ensure requirement being met)
     a = 0.705 # Threshold for succes probability, with uncertainty taken into account
-    w1 = 1e3
-    w2 = 1e1
-    k = 10 
+    w1 = 1e5
+    w2 = 10
+    #k = 10 
     input_value_dict = {"p_loss_init": p_loss_init,
                         "coherence_time": coherence_time,
                         "single_qubit_depolar_prob": single_qubit_depolar_prob,

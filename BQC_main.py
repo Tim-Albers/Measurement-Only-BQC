@@ -7,8 +7,6 @@ from yotse.execution import Executor
 from datetime import datetime
 import cProfile
 
-now = datetime.now()
-
 """
 This file contains the initialization of the 'minimal improvements' genetic alogrithm (GA) costfunction minimization as per the YOTSE workflow. 
 Here, one can specify the parameters to be minimized over, the ranges from which the initial values are picked (param_range/constraints) 
@@ -119,9 +117,9 @@ def main():
     for i in range(experiment.opt_info_list[0].opt_parameters["num_generations"]):
 #        assert BQC_executor.optimization_alg.ga_instance.generations_completed == i   # sanity check
         # todo : the grid based point generation is still somehow bugged
-        print(f"START STEP {i} at {now.strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"START STEP {i} at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         BQC_executor.run(step_number=i, evolutionary_point_generation=True)
-        print(f"END STEP {i} at {now.strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"END STEP {i} at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
     solution = BQC_executor.optimizer.suggest_best_solution()
     print(f"Optimization parameters: {experiment.opt_info_list[0].opt_parameters}\n")

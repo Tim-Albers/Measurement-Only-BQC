@@ -30,7 +30,7 @@ def BQC_pre():
             Parameter(
                 name="p_loss_init",
                 param_range=[0.8846,0.95],
-                number_points=3,
+                number_points=4,
                 distribution="uniform",
                 constraints={'low': 0.8846, 'high': 0.95},
                 weights=None,   # todo not implemented
@@ -40,7 +40,7 @@ def BQC_pre():
             Parameter(
                 name="coherence_time",
                 param_range=[30000000, 62000000],
-                number_points=4,
+                number_points=3,
                 distribution="uniform",
                 constraints={'low': 30000000, 'high': 62000000},
                 weights=None,
@@ -82,7 +82,7 @@ def BQC_pre():
             OptimizationInfo(
                 name="GA",                      # name of the optimization algorithm (Genetic Algorithm)
                 opt_parameters={
-                    "num_generations": 3,       # number of iterations of the algorithm
+                    "num_generations": 20,       # number of iterations of the algorithm
                     #"num_points": 10,           # number of points per param to re-create , now determined by initial
                     "num_parents_mating": 8,    # number of points taken of each generation to go onto the next generation
                     "mutation_probability": .2, # probability of mutation

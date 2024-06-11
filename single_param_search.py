@@ -42,52 +42,38 @@ def run_single_iteration(command):
         print(f"Error running the script: {e}")
         return None
 
-def find_error_prob(num_runs, run_amount, opt_params, script_path):
-    outcomes = []
-    runtimes = []
+def prepare_commands(num_runs, run_amount, opt_params, script_path):
     iterations = math.floor(num_runs / run_amount)
     if iterations == 0:
         raise IterationError()
     last_bit = num_runs - iterations * run_amount
     command = ['python', str(script_path), "--opt_params", str(opt_params), "--run_amount", str(run_amount)]
     
-    # Prepare commands for parallel execution
     commands = [command for _ in range(iterations)]
     
-    with Pool(processes=min(70, iterations)) as pool:
-        results = pool.map(run_single_iteration, commands)
-    
-    for result in results:
-        if result:
-            meas_outcome, runtime = result
-            outcomes.append(meas_outcome)
-            runtimes.append(runtime)
-
     if last_bit != 0:
-        command = ['python', str(script_path), "--opt_params", str(opt_params), "--run_amount", str(last_bit)]
-        result = run_single_iteration(command)
-        if result:
-            meas_outcome, runtime = result
-            outcomes.append(meas_outcome)
-            runtimes.append(runtime)
-
-    avg_outcome = sum(outcomes) / len(outcomes)
-    avg_runtime = sum(runtimes) / len(runtimes)
-    print("successprob: ", avg_outcome)
-    if avg_outcome is not None:
-        return avg_outcome, avg_runtime
-    else:
-        print('No valid values found in for finding average outcome')
+        last_command = ['python', str(script_path), "--opt_params", str(opt_params), "--run_amount", str(last_bit)]
+        commands.append(last_command)
+    
+    return commands
 
 def run_simulation(p_loss, script_path):
-    # Ensure all required parameters are present in opt_params
     opt_params = param_base_dict.copy()
     opt_params['p_loss_init'] = float(p_loss)
     
     num_runs = 70000
     run_amount = 10000
     
-    avg_outcome, avg_runtime = find_error_prob(num_runs, run_amount, opt_params, script_path)
+    commands = prepare_commands(num_runs, run_amount, opt_params, script_path)
+    
+    with Pool(processes=min(70, len(commands))) as pool:
+        results = pool.map(run_single_iteration, commands)
+    
+    outcomes = [result[0] for result in results if result]
+    runtimes = [result[1] for result in results if result]
+    
+    avg_outcome = sum(outcomes) / len(outcomes)
+    avg_runtime = sum(runtimes) / len(runtimes)
     
     return p_loss, avg_outcome, avg_runtime
 
@@ -96,7 +82,6 @@ p_loss_init_values = np.linspace(0.8846, 0.95, 10)
 if __name__ == '__main__':
     script_path = '/home/timalbers/CODE/Measurement-Only-BQC/Simulationscript.py'
     
-    # Create a pool of workers equal to the number of available cores
     with Pool(processes=10) as pool:
         results = pool.starmap(run_simulation, [(p_loss, script_path) for p_loss in p_loss_init_values])
     

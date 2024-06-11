@@ -89,8 +89,8 @@ p_loss_init_values = np.linspace(0.8846, 0.95, 50)
 
 if __name__ == '__main__':
     print(f"Starting simulation at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    num_runs = 15000
-    run_amount = 15000
+    num_runs = 15
+    run_amount = 15
     # Create a pool of workers equal to the number of available cores
     with Pool(processes=80) as pool:
         results = pool.map(run_simulation, p_loss_init_values)

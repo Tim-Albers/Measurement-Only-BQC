@@ -27,7 +27,6 @@ from instructions_local import XX
 from argparse import ArgumentParser
 import ast
 
-ns.util.simtools.MICROSECOND=1000.0 # factor to convert simulation time to nanoseconds
 
 steady_param_yaml = "/home/timalbers/CODE/Measurement-Only-BQC/steady_params.yaml" # Path to yaml file containing the paramters that are not varied over
 
@@ -459,7 +458,7 @@ def run_experiment(I, G, fibre_length, mbqc_bases, opt_params, run_amount):
         ClientProtocol(client).start(I, G, mbqc_bases)
         ServerProtocol(server).start(opt_params=opt_params)
         ns.sim_run()
-        run_times.append(1000*ns.sim_time())
+        run_times.append(100*ns.sim_time(ns.MICROSECOND))
         resses.append(s[-1]) # Decoded outcome of the final measurement is the output of the computation
     result = sum(resses)/len(resses) # Average of per-iteration outcomes
     confidence = np.sqrt(np.log(2/0.05)/(2*run_amount)) # 95% confidence interval

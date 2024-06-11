@@ -85,7 +85,7 @@ def run_simulation(p_loss):
     avg_outcome, avg_runtime = find_error_prob(15000, 15000, opt_params, script_path)
     return p_loss, avg_outcome, avg_runtime
 
-p_loss_init_values = np.linspace(0.8846, 0.95, 40)
+p_loss_init_values = np.linspace(0.01, 0.8846, 70)
 
 if __name__ == '__main__':
     print(f"Starting simulation at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

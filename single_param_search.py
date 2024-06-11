@@ -82,19 +82,20 @@ def run_simulation(p_loss):
     # Ensure all required parameters are present in opt_params
     opt_params = param_base_dict.copy()
     opt_params['p_loss_init'] = float(p_loss)
-    avg_outcome, avg_runtime = find_error_prob(1000, 1000, opt_params, script_path)
+    avg_outcome, avg_runtime = find_error_prob(15000, 15000, opt_params, script_path)
     return p_loss, avg_outcome, avg_runtime
 
 p_loss_init_values = np.linspace(0.8846, 0.95, 50)
 
 if __name__ == '__main__':
     print(f"Starting simulation at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    num_runs = 15
-    run_amount = 15
+    num_runs = 15000
+    run_amount = 15000
+    confidence = np.sqrt(np.log(2/0.05)/(2*run_amount)) # 95% confidence interval
     # Create a pool of workers equal to the number of available cores
     with Pool(processes=80) as pool:
         results = pool.map(run_simulation, p_loss_init_values)
     
     for p_loss, avg_outcome, avg_runtime in results:
-        print(f"p_loss_init: {p_loss}, successprob: {avg_outcome}, avg simulated time: {convert_seconds(avg_runtime, 1e6)} for {num_runs} runs")
+        print(f"p_loss_init: {p_loss}, successprob: {avg_outcome} +/- {confidence}, avg simulated time: {convert_seconds(avg_runtime, 1e6)} for {num_runs} runs")
     print(f"Simulation finished at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

@@ -27,8 +27,7 @@ class IterationError(Exception):
     def __init__(self, msg="Iterations should not be 0: decrease run_amount"):
         super().__init__(msg)
 
-def run_single_iteration(args):
-    command, k = args
+def run_single_iteration(command):
     try:
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
@@ -42,7 +41,6 @@ def run_single_iteration(args):
     except subprocess.CalledProcessError as e:
         print(f"Error running the script: {e}")
         return None
-    print(f"Iteration {k+1} complete")
 
 def find_error_prob(num_runs, run_amount, opt_params, script_path):
     outcomes = []
@@ -53,11 +51,11 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
     last_bit = num_runs - iterations * run_amount
     command = ['python', str(script_path), "--opt_params", str(opt_params), "--run_amount", str(run_amount)]
     
-    # Prepare arguments for parallel execution
-    args = [(command, k) for k in range(iterations)]
+    # Prepare commands for parallel execution
+    commands = [command for _ in range(iterations)]
     
     with Pool(processes=min(70, iterations)) as pool:
-        results = pool.map(run_single_iteration, args)
+        results = pool.map(run_single_iteration, commands)
     
     for result in results:
         if result:
@@ -67,18 +65,11 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
 
     if last_bit != 0:
         command = ['python', str(script_path), "--opt_params", str(opt_params), "--run_amount", str(last_bit)]
-        try:
-            process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            stdout, stderr = process.communicate()
-            if process.returncode == 0:
-                meas_outcome, runtime = stdout.decode().split(',')
-                outcomes.append(float(meas_outcome))
-                runtimes.append(float(runtime))
-            else:
-                error_mes = stderr.decode()
-                print(f"Error running simulation script:\n {error_mes}")
-        except subprocess.CalledProcessError as e:
-            print(f"Error running the script: {e}")
+        result = run_single_iteration(command)
+        if result:
+            meas_outcome, runtime = result
+            outcomes.append(meas_outcome)
+            runtimes.append(runtime)
 
     avg_outcome = sum(outcomes) / len(outcomes)
     avg_runtime = sum(runtimes) / len(runtimes)

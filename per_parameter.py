@@ -22,11 +22,6 @@ param_base_dict = {
     "emission_fidelity": 0.947
 }
 
-class IterationError(Exception):
-    """Custom exception for iteration errors."""
-    def __init__(self, msg="Iterations should not be 0: decrease run_amount"):
-        super().__init__(msg)
-
 def find_error_prob(num_runs, run_amount, opt_params, script_path):
     outcomes = []
     runtimes = []
@@ -65,39 +60,26 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
             print(f"Error running the script: {e}")
     avg_outcome = sum(outcomes) / len(outcomes)
     avg_runtime = sum(runtimes) / len(runtimes)
-    return avg_outcome, avg_runtime
+    print("successprob: ", avg_outcome)
+    if avg_outcome is not None:
+        return avg_outcome, avg_runtime
+    else:
+        print('No valid values found in for finding average outcome')
 
-def run_simulation(p_loss, script_path):
+def run_simulation(p_loss):
+    script_path = '/home/timalbers/CODE/Measurement-Only-BQC/Simulationscript.py'
     # Ensure all required parameters are present in opt_params
     opt_params = param_base_dict.copy()
     opt_params['p_loss_init'] = float(p_loss)
-    
-    num_runs = 70000
-    run_amount = 10000
-    chunk_size = 10000
-    num_chunks = num_runs // chunk_size
-    
-    results = []
-    for _ in range(num_chunks):
-        avg_outcome, avg_runtime = find_error_prob(chunk_size, chunk_size, opt_params, script_path)
-        results.append((avg_outcome, avg_runtime))
-    
-    avg_outcomes = [result[0] for result in results]
-    avg_runtimes = [result[1] for result in results]
-    
-    overall_avg_outcome = sum(avg_outcomes) / len(avg_outcomes)
-    overall_avg_runtime = sum(avg_runtimes) / len(avg_runtimes)
-    
-    return p_loss, overall_avg_outcome, overall_avg_runtime
+    avg_outcome, avg_runtime = find_error_prob(70000, 10000, opt_params, script_path)
+    return p_loss, avg_outcome, avg_runtime
 
 p_loss_init_values = np.linspace(0.8846, 0.95, 10)
 
 if __name__ == '__main__':
-    script_path = '/home/timalbers/CODE/Measurement-Only-BQC/Simulationscript.py'
-    
     # Create a pool of workers equal to the number of available cores
-    with Pool(processes=70) as pool:
-        results = pool.starmap(run_simulation, [(p_loss, script_path) for p_loss in p_loss_init_values])
+    with Pool(processes=80) as pool:
+        results = pool.map(run_simulation, p_loss_init_values)
     
     for p_loss, avg_outcome, avg_runtime in results:
         print(f"p_loss_init: {p_loss}, successprob: {avg_outcome}, avg runtime: {avg_runtime} ms")

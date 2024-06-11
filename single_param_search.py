@@ -94,5 +94,5 @@ if __name__ == '__main__':
         results = pool.map(run_simulation, p_loss_init_values)
     
     for p_loss, avg_outcome, avg_runtime in results:
-        print(f"p_loss_init: {p_loss}, successprob: {avg_outcome}, avg runtime: {convert_seconds(avg_runtime, 1e6)}")
+        print(f"p_loss_init: {p_loss}, successprob: {avg_outcome}, avg runtime: {convert_seconds(avg_runtime, 1e6)} for 1000 runs")
 #test

@@ -70,11 +70,8 @@ p_loss_init_values = np.linspace(0.8846, 0.95, 10)
 if __name__ == '__main__':
     script_path = '/home/timalbers/CODE/Measurement-Only-BQC/Simulationscript.py'
     for p_loss in p_loss_init_values:
-        opt_params = steady_params.copy()
         # Ensure all required parameters are present in opt_params
-        for key, value in param_base_dict.items():
-            if key not in opt_params:
-                opt_params[key] = value
+        opt_params = param_base_dict.copy()
         opt_params['p_loss_init'] = float(p_loss)
         avg_outcome, avg_runtime = find_error_prob(70000, 10000, opt_params, script_path)
         print(f"p_loss_init: {p_loss}, succesprob: {avg_outcome}, avg runtime: {avg_runtime} ms")

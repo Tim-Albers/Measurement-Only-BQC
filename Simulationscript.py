@@ -27,7 +27,7 @@ from instructions_local import XX
 from argparse import ArgumentParser
 import ast
 
-ns.util.simpools.MICROSECOND=1000.0 # factor to convert simulation time to nanoseconds
+ns.util.simtools.MICROSECOND=1000.0 # factor to convert simulation time to nanoseconds
 
 steady_param_yaml = "/home/timalbers/CODE/Measurement-Only-BQC/steady_params.yaml" # Path to yaml file containing the paramters that are not varied over
 

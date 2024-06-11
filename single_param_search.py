@@ -6,6 +6,7 @@ import yaml
 from yaml.loader import SafeLoader
 import subprocess
 import math
+from datetime import datetime
 from multiprocessing import Pool
 
 def convert_seconds(total_seconds, factor=1):
@@ -53,7 +54,7 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
                 print(f"Error running simulation script:\n {error_mes}")
         except subprocess.CalledProcessError as e:
             print(f"Error running the script: {e}")
-        print(f"Iteration {k+1} of {iterations} complete")
+        print(f"Iteration {k+1} of {iterations} complete at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     if last_bit != 0:
         command = ['python', str(script_path), "--opt_params", str(opt_params), "--run_amount", str(last_bit)]
         try:
@@ -84,15 +85,16 @@ def run_simulation(p_loss):
     avg_outcome, avg_runtime = find_error_prob(1000, 1000, opt_params, script_path)
     return p_loss, avg_outcome, avg_runtime
 
-p_loss_init_values = np.linspace(0.8846, 0.95, 60)
+p_loss_init_values = np.linspace(0.8846, 0.95, 50)
 
 if __name__ == '__main__':
-    num_runs = 1000
-    run_amount = 1000
+    print(f"Starting simulation at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    num_runs = 15000
+    run_amount = 15000
     # Create a pool of workers equal to the number of available cores
     with Pool(processes=80) as pool:
         results = pool.map(run_simulation, p_loss_init_values)
     
     for p_loss, avg_outcome, avg_runtime in results:
-        print(f"p_loss_init: {p_loss}, successprob: {avg_outcome}, avg runtime: {convert_seconds(avg_runtime, 1e6)} for 1000 runs")
-#test
+        print(f"p_loss_init: {p_loss}, successprob: {avg_outcome}, avg simulated time: {convert_seconds(avg_runtime, 1e6)} for {num_runs} runs")
+    print(f"Simulation finished at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

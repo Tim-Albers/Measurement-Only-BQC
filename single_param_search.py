@@ -76,7 +76,7 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
     else:
         print('No valid values found in for finding average outcome')
 
-def run_simulation(p_loss):
+def run_simulation(p_loss, num_runs, run_amount):
     script_path = '/home/timalbers/CODE/Measurement-Only-BQC/Simulationscript.py'
     # Ensure all required parameters are present in opt_params
     opt_params = param_base_dict.copy()
@@ -87,10 +87,12 @@ def run_simulation(p_loss):
 p_loss_init_values = np.linspace(0.8846, 0.95, 60)
 
 if __name__ == '__main__':
+    num_runs = 1000
+    run_amount = 1000
     # Create a pool of workers equal to the number of available cores
     with Pool(processes=80) as pool:
-        results = pool.map(run_simulation, p_loss_init_values)
+        results = pool.map(run_simulation, p_loss_init_values, num_runs, run_amount)
     
     for p_loss, avg_outcome, avg_runtime in results:
-        print(f"p_loss_init: {p_loss}, successprob: {avg_outcome}, avg runtime: {convert_seconds(avg_runtime, 1e6)}")
+        print(f"p_loss_init: {p_loss}, successprob: {avg_outcome}, avg runtime: {convert_seconds(avg_runtime, 1e6)} over {num_runs} runs")
 #test

@@ -8,6 +8,16 @@ import subprocess
 import math
 from multiprocessing import Pool
 
+def convert_seconds(total_seconds, factor=1):
+    """factor = 1e0 for seconds, 1e3 for milliseconds, 1e6 for microseconds, etc."""
+    days = (total_seconds/factor) // (24 * 3600)  # Calculate the number of days
+    total_seconds %= (24 * 3600)         # Update total_seconds to the remainder
+    hours = total_seconds // 3600        # Calculate the number of hours
+    total_seconds %= 3600                # Update total_seconds to the remainder
+    minutes = total_seconds // 60        # Calculate the number of minutes
+    seconds = total_seconds % 60         # Calculate the number of remaining seconds
+    return f"{int(days)}d, {int(hours)}h, {int(minutes)}m, {round(seconds, 2)}s"
+
 steady_param_yaml = "/home/timalbers/CODE/Measurement-Only-BQC/steady_params.yaml"  # Path to yaml file containing the paramters that are not varied over
 
 with open(steady_param_yaml) as f:  # Find parameters as stored in the yaml file
@@ -71,7 +81,7 @@ def run_simulation(p_loss):
     # Ensure all required parameters are present in opt_params
     opt_params = param_base_dict.copy()
     opt_params['p_loss_init'] = float(p_loss)
-    avg_outcome, avg_runtime = find_error_prob(100, 100, opt_params, script_path)
+    avg_outcome, avg_runtime = find_error_prob(1000, 1000, opt_params, script_path)
     return p_loss, avg_outcome, avg_runtime
 
 p_loss_init_values = np.linspace(0.8846, 0.95, 60)
@@ -82,4 +92,5 @@ if __name__ == '__main__':
         results = pool.map(run_simulation, p_loss_init_values)
     
     for p_loss, avg_outcome, avg_runtime in results:
-        print(f"p_loss_init: {p_loss}, successprob: {avg_outcome}, avg runtime: {avg_runtime} ms")
+        print(f"p_loss_init: {p_loss}, successprob: {avg_outcome}, avg runtime: {convert_seconds(avg_runtime, 1e6)}")
+#test

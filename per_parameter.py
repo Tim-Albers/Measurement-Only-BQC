@@ -71,7 +71,7 @@ def run_simulation(p_loss):
     # Ensure all required parameters are present in opt_params
     opt_params = param_base_dict.copy()
     opt_params['p_loss_init'] = float(p_loss)
-    avg_outcome, avg_runtime = find_error_prob(70000, 10000, opt_params, script_path)
+    avg_outcome, avg_runtime = find_error_prob(15000, 15000, opt_params, script_path)
     return p_loss, avg_outcome, avg_runtime
 
 p_loss_init_values = np.linspace(0.8846, 0.95, 10)

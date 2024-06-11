@@ -27,8 +27,7 @@ class IterationError(Exception):
     def __init__(self, msg="Iterations should not be 0: decrease run_amount"):
         super().__init__(msg)
 
-def find_error_prob_for_chunk(params):
-    num_runs, run_amount, opt_params, script_path = params
+def find_error_prob(num_runs, run_amount, opt_params, script_path):
     outcomes = []
     runtimes = []
     iterations = math.floor(num_runs / run_amount)
@@ -68,8 +67,7 @@ def find_error_prob_for_chunk(params):
     avg_runtime = sum(runtimes) / len(runtimes)
     return avg_outcome, avg_runtime
 
-def run_simulation(p_loss):
-    script_path = '/home/timalbers/CODE/Measurement-Only-BQC/Simulationscript.py'
+def run_simulation(p_loss, script_path):
     # Ensure all required parameters are present in opt_params
     opt_params = param_base_dict.copy()
     opt_params['p_loss_init'] = float(p_loss)
@@ -79,10 +77,10 @@ def run_simulation(p_loss):
     chunk_size = 10000
     num_chunks = num_runs // chunk_size
     
-    pool_params = [(chunk_size, chunk_size, opt_params, script_path) for _ in range(num_chunks)]
-    
-    with Pool(processes=num_chunks) as pool:
-        results = pool.map(find_error_prob_for_chunk, pool_params)
+    results = []
+    for _ in range(num_chunks):
+        avg_outcome, avg_runtime = find_error_prob(chunk_size, chunk_size, opt_params, script_path)
+        results.append((avg_outcome, avg_runtime))
     
     avg_outcomes = [result[0] for result in results]
     avg_runtimes = [result[1] for result in results]
@@ -95,9 +93,11 @@ def run_simulation(p_loss):
 p_loss_init_values = np.linspace(0.8846, 0.95, 10)
 
 if __name__ == '__main__':
+    script_path = '/home/timalbers/CODE/Measurement-Only-BQC/Simulationscript.py'
+    
     # Create a pool of workers equal to the number of available cores
-    with Pool(processes=10) as pool:
-        results = pool.map(run_simulation, p_loss_init_values)
+    with Pool(processes=70) as pool:
+        results = pool.starmap(run_simulation, [(p_loss, script_path) for p_loss in p_loss_init_values])
     
     for p_loss, avg_outcome, avg_runtime in results:
         print(f"p_loss_init: {p_loss}, successprob: {avg_outcome}, avg runtime: {avg_runtime} ms")

@@ -29,10 +29,10 @@ def BQC_pre():
         parameters=[
             Parameter(
                 name="p_loss_init",
-                param_range=[0.8846,0.95],
-                number_points=4,
+                param_range=[0.8675, 0.9],
+                number_points=3,
                 distribution="uniform",
-                constraints={'low': 0.8846, 'high': 0.95},
+                constraints={'low': 0.8675, 'high': 0.9},
                 weights=None,   # todo not implemented
                 parameter_active=True,
                 param_type="continuous"

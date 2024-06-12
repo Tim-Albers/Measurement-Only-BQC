@@ -30,7 +30,7 @@ def BQC_pre():
             Parameter(
                 name="p_loss_init",
                 param_range=[0.8675, 0.9],
-                number_points=3,
+                number_points=2,
                 distribution="uniform",
                 constraints={'low': 0.8675, 'high': 0.9},
                 weights=None,   # todo not implemented
@@ -70,7 +70,7 @@ def BQC_pre():
             Parameter(
                 name="emission_fidelity",
                 param_range=[0.5, 0.947],
-                number_points=2,
+                number_points=3,
                 distribution="uniform",
                 constraints={'low': 0.5, 'high': 0.947},
                 weights=None,

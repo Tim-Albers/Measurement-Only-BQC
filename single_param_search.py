@@ -95,6 +95,10 @@ def run_simulation(param):
 p_loss_init_values = np.linspace(0.01, 0.8846, 70)
 coherence_time_values = np.linspace(10000000, 62000000, 40)
 
+def ensure_directory_exists(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate JSON file with metadata.')
     parser.add_argument('--uid', help='UID for the folder and JSON file', required=True)
@@ -108,8 +112,12 @@ if __name__ == '__main__':
     with Pool(processes=80) as pool:
         results = pool.map(run_simulation, coherence_time_values)
 
+    # Ensure the output directory exists
+    output_dir = os.path.join('output', args.uid)
+    ensure_directory_exists(output_dir)
+
     # Save results to a CSV file
-    csv_file_path = os.path.join('output', f'{args.uid}', 'results.csv')
+    csv_file_path = os.path.join(output_dir, 'results.csv')
     with open(csv_file_path, 'w', newline='') as csvfile:
         fieldnames = ['param', 'avg_outcome', 'avg_runtime', 'avg_attempts']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)

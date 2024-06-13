@@ -36,6 +36,7 @@ param_base_dict = {
 def find_error_prob(num_runs, run_amount, opt_params, script_path):
     outcomes = []
     runtimes = []
+    attempts = []
     iterations = math.floor(num_runs / run_amount)
     if iterations == 0:
         raise IterationError()
@@ -46,9 +47,10 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
             process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = process.communicate()
             if process.returncode == 0:
-                meas_outcome, runtime = stdout.decode().split(',')
+                meas_outcome, runtime, num_attempts = stdout.decode().split(',')
                 outcomes.append(float(meas_outcome))
                 runtimes.append(float(runtime))
+                attempts.append(int(num_attempts))
             else:
                 error_mes = stderr.decode()
                 print(f"Error running simulation script:\n {error_mes}")
@@ -61,9 +63,10 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
             process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = process.communicate()
             if process.returncode == 0:
-                meas_outcome, runtime = stdout.decode().split(',')
+                meas_outcome, runtime, num_attempts = stdout.decode().split(',')
                 outcomes.append(float(meas_outcome))
                 runtimes.append(float(runtime))
+                attempts.append(int(num_attempts))
             else:
                 error_mes = stderr.decode()
                 print(f"Error running simulation script:\n {error_mes}")
@@ -71,6 +74,7 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
             print(f"Error running the script: {e}")
     avg_outcome = sum(outcomes) / len(outcomes)
     avg_runtime = sum(runtimes) / len(runtimes)
+    avg_attempts = sum(attempts) / len(attempts)
     print("successprob: ", avg_outcome)
     if avg_outcome is not None:
         return avg_outcome, avg_runtime
@@ -98,6 +102,6 @@ if __name__ == '__main__':
     with Pool(processes=80) as pool:
         results = pool.map(run_simulation, coherence_time_values)
     
-    for param, avg_outcome, avg_runtime in results:
-        print(f"coherence_time: {param}, successprob: {avg_outcome} +/- {confidence}, avg simulated time: {convert_seconds(avg_runtime, 1e6)} for {num_runs} runs")
+    for param, avg_outcome, avg_runtime, avg_attempts in results:
+        print(f"coherence_time: {param}, successprob: {avg_outcome} +/- {confidence}, avg attempts: {avg_attempts},  avg simulated time: {convert_seconds(avg_runtime, 1e6)} for {num_runs} runs")
     print(f"Simulation finished at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

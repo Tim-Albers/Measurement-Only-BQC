@@ -75,9 +75,9 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
     avg_outcome = sum(outcomes) / len(outcomes)
     avg_runtime = sum(runtimes) / len(runtimes)
     avg_attempts = sum(attempts) / len(attempts)
-    print("successprob: ", avg_outcome)
+    print(f"successprob: {avg_outcome}, avg attempts: {avg_attempts}, avg simulated time: {convert_seconds(avg_runtime, 1e6)} for {num_runs} runs")
     if avg_outcome is not None:
-        return avg_outcome, avg_runtime
+        return avg_outcome, avg_runtime, avg_attempts
     else:
         print('No valid values found in for finding average outcome')
 
@@ -87,7 +87,7 @@ def run_simulation(param):
     opt_params = param_base_dict.copy()
     #opt_params['p_loss_init'] = float(p_loss)
     opt_params['coherence_time'] = float(param)
-    avg_outcome, avg_runtime = find_error_prob(15, 15, opt_params, script_path)
+    avg_outcome, avg_runtime, avg_attempts = find_error_prob(15, 15000, opt_params, script_path)
     return param, avg_outcome, avg_runtime
 
 p_loss_init_values = np.linspace(0.01, 0.8846, 70)

@@ -1,5 +1,7 @@
 import sys
 import csv
+import os
+import argparse
 import numpy as np
 from argparse import ArgumentParser
 import yaml
@@ -94,6 +96,10 @@ p_loss_init_values = np.linspace(0.01, 0.8846, 70)
 coherence_time_values = np.linspace(30000000, 62000000, 10)
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Generate JSON file with metadata.')
+    parser.add_argument('--uid', help='UID for the folder and JSON file', required=True)
+    args = parser.parse_args()
+
     print(f"Starting simulation at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     num_runs = 1000
     run_amount = 1000
@@ -101,7 +107,18 @@ if __name__ == '__main__':
     # Create a pool of workers equal to the number of available cores
     with Pool(processes=80) as pool:
         results = pool.map(run_simulation, coherence_time_values)
-    
+
+    # Save results to a CSV file
+    csv_file_path = os.path.join('output', f'{args.uid}' 'results.csv')
+    with open(csv_file_path, 'w', newline='') as csvfile:
+        fieldnames = ['param', 'avg_outcome', 'avg_runtime', 'avg_attempts']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        for param, avg_outcome, avg_runtime, avg_attempts in results:
+            writer.writerow({'param': param, 'avg_outcome': avg_outcome, 'avg_runtime': avg_runtime, 'avg_attempts': avg_attempts})
+    print(f"Results saved to {csv_file_path}")
+
+    # Print results to console
     for param, avg_outcome, avg_runtime, avg_attempts in results:
         print(f"coherence_time: {param}, successprob: {avg_outcome} +/- {confidence}, avg attempts: {avg_attempts},  avg simulated time: {convert_seconds(avg_runtime, 1e6)} for {num_runs} runs")
     print(f"Simulation finished at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

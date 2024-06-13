@@ -73,8 +73,7 @@ def delete_data(data_filename):
         with open(data_filename, 'w') as datafile:
             datafile.write('')
     except Exception as e:
-        print(f"An error occurred while deleting data: {e}")ssh q   
-
+        print(f"An error occurred while deleting data: {e}")
 
 def find_error_prob(num_runs, run_amount, opt_params, script_path):
     outcomes = []
@@ -89,7 +88,7 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
             process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = process.communicate()
             if process.returncode == 0:
-                meas_outcome, runtime, attempts = stdout.decode().split(',') # Attempts is not used in this function
+                meas_outcome, runtime = stdout.decode().split(',')
                 outcomes.append(float(meas_outcome))
                 runtimes.append(float(runtime))
             else:
@@ -104,7 +103,7 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
             process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = process.communicate()
             if process.returncode == 0:
-                meas_outcome, runtime, attempts = stdout.decode().split(',') # Attempts is not used in this function
+                meas_outcome, runtime = stdout.decode().split(',')
                 outcomes.append(float(meas_outcome))
                 runtimes.append(float(runtime))
             else:
@@ -153,7 +152,7 @@ def costfunction(p_loss_init, coherence_time, single_qubit_depolar_prob, ms_depo
         for param_name in set(pni_dict.keys()) | set(pni_base_dict.keys()):
             pni = pni_dict.get(param_name, 0)
             pni_base = pni_base_dict.get(param_name, 0)
-            param_cost = np.log(pni_base)/np.log(pni)
+            param_cost = (np.log(pni)/np.log(pni_base))
             # param_cost = 1/(np.log(pni)/np.log(pni_base)) --> previous model
             Hc += param_cost
             print(f"{param_name} cost = {param_cost}")
@@ -163,7 +162,7 @@ def costfunction(p_loss_init, coherence_time, single_qubit_depolar_prob, ms_depo
     hardware_cost = Hc(TO_PROB_NO_ERROR_FUNCTION, **input_value_dict) # Hardware cost
     #cost = w1*(1 + (succes_prob - 0.7)**2)*np.heaviside(0.7 - succes_prob, 0) - w2*hardware_cost # Total cost
     #cost = w1 * np.heaviside(a - succes_prob, 0) +  w1 * np.heaviside(succes_prob - a, 1) * np.exp(k*(succes_prob-a)-1)/np.exp(k*(1-a)-1) - w2 * hardware_cost # NEW COSTFUNCTION
-    cost = w1 * np.heaviside(a - succes_prob, 1) + w2 * hardware_cost # NEW COSTFUNCTION 
+    cost =  100 + w1 * np.heaviside(a - succes_prob, 1) - w2 * hardware_cost # NEW COSTFUNCTION 
     print("cost calculated: ", cost)
     return cost, succes_prob, avg_runtime
 
@@ -180,8 +179,8 @@ if __name__ == "__main__":
     parser.add_argument('--emission_fidelity', type=float)
     args = parser.parse_args()
     parameter_values = [args.p_loss_init, args.coherence_time, args.single_qubit_depolar_prob, args.ms_depolar_prob, args.emission_fidelity]
-    num_runs =  10 #20000  #18444 #73777 # Times the simulation is repeated - determines confidence interval of average outcome based on Hoeffding's bound
-    run_amount =  10 #10000 # The simulation is run in batches of run_amount to limit memory usage
+    num_runs =  18444 #20000  #18444 #73777 # Times the simulation is repeated - determines confidence interval of average outcome based on Hoeffding's bound
+    run_amount =  18444 #10000 # The simulation is run in batches of run_amount to limit memory usage
     script_path = '/home/timalbers/CODE/Measurement-Only-BQC/Simulationscript.py'
     baseline_path = '/home/timalbers/CODE/Measurement-Only-BQC/baseline.yaml'
     # Run the "simulation"

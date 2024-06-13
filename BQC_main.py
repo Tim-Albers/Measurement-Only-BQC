@@ -23,16 +23,16 @@ def BQC_pre():
                                  program_name='costfunction.py',
                                  command_line_arguments={"--filebasename": 'output'},
                                  analysis_script="analyse_function_output.py",
-                                 executor="python"
+                                 executor="python",
                                  #files_needed=["steady_params.yaml"] # todo not implemented
                                  ),
         parameters=[
             Parameter(
                 name="p_loss_init",
-                param_range=[0.8675, 0.9],
-                number_points=2,
+                param_range=[0.8846,0.95],
+                number_points=3,
                 distribution="uniform",
-                constraints={'low': 0.8675, 'high': 0.9},
+                constraints={'low': 0.8846, 'high': 0.95},
                 weights=None,   # todo not implemented
                 parameter_active=True,
                 param_type="continuous"
@@ -40,7 +40,7 @@ def BQC_pre():
             Parameter(
                 name="coherence_time",
                 param_range=[30000000, 62000000],
-                number_points=3,
+                number_points=4,
                 distribution="uniform",
                 constraints={'low': 30000000, 'high': 62000000},
                 weights=None,
@@ -70,7 +70,7 @@ def BQC_pre():
             Parameter(
                 name="emission_fidelity",
                 param_range=[0.5, 0.947],
-                number_points=3,
+                number_points=2,
                 distribution="uniform",
                 constraints={'low': 0.5, 'high': 0.947},
                 weights=None,
@@ -82,7 +82,7 @@ def BQC_pre():
             OptimizationInfo(
                 name="GA",                      # name of the optimization algorithm (Genetic Algorithm)
                 opt_parameters={
-                    "num_generations": 20,       # number of iterations of the algorithm
+                    "num_generations": 3,       # number of iterations of the algorithm
                     #"num_points": 10,           # number of points per param to re-create , now determined by initial
                     "num_parents_mating": 8,    # number of points taken of each generation to go onto the next generation
                     "mutation_probability": .2, # probability of mutation
@@ -115,7 +115,7 @@ def main():
     experiment.parse_slurm_arg("BQC_main.py")
 
     for i in range(experiment.opt_info_list[0].opt_parameters["num_generations"]):
-        #assert BQC_executor.optimization_alg.ga_instance.generations_completed == i   # sanity check
+#        assert BQC_executor.optimization_alg.ga_instance.generations_completed == i   # sanity check
         # todo : the grid based point generation is still somehow bugged
         print(f"START STEP {i} at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         BQC_executor.run(step_number=i, evolutionary_point_generation=True)

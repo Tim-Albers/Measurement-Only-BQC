@@ -73,7 +73,8 @@ def delete_data(data_filename):
         with open(data_filename, 'w') as datafile:
             datafile.write('')
     except Exception as e:
-        print(f"An error occurred while deleting data: {e}")
+        print(f"An error occurred while deleting data: {e}")ssh q   
+        
 
 def find_error_prob(num_runs, run_amount, opt_params, script_path):
     outcomes = []
@@ -88,7 +89,7 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
             process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = process.communicate()
             if process.returncode == 0:
-                meas_outcome, runtime = stdout.decode().split(',')
+                meas_outcome, runtime, attempts = stdout.decode().split(',') # Attempts is not used in this function
                 outcomes.append(float(meas_outcome))
                 runtimes.append(float(runtime))
             else:
@@ -103,7 +104,7 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
             process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = process.communicate()
             if process.returncode == 0:
-                meas_outcome, runtime = stdout.decode().split(',')
+                meas_outcome, runtime, attempts = stdout.decode().split(',') # Attempts is not used in this function
                 outcomes.append(float(meas_outcome))
                 runtimes.append(float(runtime))
             else:

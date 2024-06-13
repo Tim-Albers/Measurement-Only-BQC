@@ -78,6 +78,7 @@ def delete_data(data_filename):
 def find_error_prob(num_runs, run_amount, opt_params, script_path):
     outcomes = []
     runtimes = []
+    attempts = []
     iterations = math.floor(num_runs/run_amount)
     if iterations == 0:
         raise IterationError()
@@ -88,9 +89,11 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
             process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = process.communicate()
             if process.returncode == 0:
-                meas_outcome, runtime = stdout.decode().split(',')
+                meas_outcome, runtime, attempt = stdout.decode().split(',')
                 outcomes.append(float(meas_outcome))
                 runtimes.append(float(runtime))
+                attempts.append(float(attempt))
+
             else:
                 error_mes = stderr.decode()
                 print(f"Error running simulation script:\n {error_mes}")
@@ -103,9 +106,10 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
             process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = process.communicate()
             if process.returncode == 0:
-                meas_outcome, runtime = stdout.decode().split(',')
+                meas_outcome, runtime, attempt = stdout.decode().split(',')
                 outcomes.append(float(meas_outcome))
                 runtimes.append(float(runtime))
+                attempts.append(float(attempt))
             else:
                 error_mes = stderr.decode()
                 print(f"Error running simulation script:\n {error_mes}")
@@ -113,9 +117,10 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
             print(f"Error running the script: {e}")
     avg_outcome = sum(outcomes)/len(outcomes)
     avg_runtime = sum(runtimes)/len(runtimes)
+    avg_attempts = sum(attempts)/len(attempts)
     print("succesprob: ", avg_outcome)
     if avg_outcome is not None:
-        return avg_outcome, avg_runtime
+        return avg_outcome, avg_runtime, avg_attempts
     else:
         print('No valid values found in for finding average outcome')
 
@@ -152,17 +157,17 @@ def costfunction(p_loss_init, coherence_time, single_qubit_depolar_prob, ms_depo
         for param_name in set(pni_dict.keys()) | set(pni_base_dict.keys()):
             pni = pni_dict.get(param_name, 0)
             pni_base = pni_base_dict.get(param_name, 0)
-            param_cost = (np.log(pni)/np.log(pni_base))
+            param_cost = np.log(pni_base)/np.log(pni)
             # param_cost = 1/(np.log(pni)/np.log(pni_base)) --> previous model
             Hc += param_cost
             print(f"{param_name} cost = {param_cost}")
         return Hc
-    succes_prob, avg_runtime = find_error_prob(num_runs, run_amount, input_value_dict, script_path) # Average error probability as returned from simulation script
+    succes_prob, avg_runtime, avg_attempts = find_error_prob(num_runs, run_amount, input_value_dict, script_path) # Average error probability as returned from simulation script
     #error_prob = 1 - succes_prob # Error probability
-    hardware_cost = Hc(TO_PROB_NO_ERROR_FUNCTION, **input_value_dict) # Hardware cost
+    hardware_cost = Hc(TO_PROB_NO_ERROR_FUNCTION, **input_value_dict) # Hardware cost 
     #cost = w1*(1 + (succes_prob - 0.7)**2)*np.heaviside(0.7 - succes_prob, 0) - w2*hardware_cost # Total cost
     #cost = w1 * np.heaviside(a - succes_prob, 0) +  w1 * np.heaviside(succes_prob - a, 1) * np.exp(k*(succes_prob-a)-1)/np.exp(k*(1-a)-1) - w2 * hardware_cost # NEW COSTFUNCTION
-    cost =  100 + w1 * np.heaviside(a - succes_prob, 1) - w2 * hardware_cost # NEW COSTFUNCTION 
+    cost =  100 + w1 * np.heaviside(a - succes_prob, 1) + w2 * hardware_cost # NEW COSTFUNCTION # TODO: ADD PENALTY FOR HIGH NUMBER OF ATTEMPTS
     print("cost calculated: ", cost)
     return cost, succes_prob, avg_runtime
 

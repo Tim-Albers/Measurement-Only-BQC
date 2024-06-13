@@ -466,7 +466,7 @@ def run_experiment(I, G, fibre_length, mbqc_bases, opt_params, run_amount):
     confidence = np.sqrt(np.log(2/0.05)/(2*run_amount)) # 95% confidence interval
     avg_runtime =  np.average(run_times) # Average runtime in ms
     avg_attempts = np.average(total_attempts) # Average number of attempts
-    print(f"{result},{avg_runtime}")
+    print(f"{result},{avg_runtime},{avg_attempts}")
     return result, avg_runtime, avg_attempts
 
 def main():

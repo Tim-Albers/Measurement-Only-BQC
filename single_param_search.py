@@ -50,7 +50,7 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
                 meas_outcome, runtime, num_attempts = stdout.decode().split(',')
                 outcomes.append(float(meas_outcome))
                 runtimes.append(float(runtime))
-                attempts.append(int(num_attempts))
+                attempts.append(float(num_attempts))
             else:
                 error_mes = stderr.decode()
                 print(f"Error running simulation script:\n {error_mes}")
@@ -66,7 +66,7 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
                 meas_outcome, runtime, num_attempts = stdout.decode().split(',')
                 outcomes.append(float(meas_outcome))
                 runtimes.append(float(runtime))
-                attempts.append(int(num_attempts))
+                attempts.append(float(num_attempts))
             else:
                 error_mes = stderr.decode()
                 print(f"Error running simulation script:\n {error_mes}")

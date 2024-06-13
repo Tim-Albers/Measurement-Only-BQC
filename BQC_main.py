@@ -23,9 +23,7 @@ def BQC_pre():
                                  program_name='costfunction.py',
                                  command_line_arguments={"--filebasename": 'output'},
                                  analysis_script="analyse_function_output.py",
-                                 executor="python",
-                                 output_dir_name="output",
-                                 output_extension="csv"
+                                 executor="python"
                                  #files_needed=["steady_params.yaml"] # todo not implemented
                                  ),
         parameters=[
@@ -117,7 +115,7 @@ def main():
     experiment.parse_slurm_arg("BQC_main.py")
 
     for i in range(experiment.opt_info_list[0].opt_parameters["num_generations"]):
-#        assert BQC_executor.optimization_alg.ga_instance.generations_completed == i   # sanity check
+        #assert BQC_executor.optimization_alg.ga_instance.generations_completed == i   # sanity check
         # todo : the grid based point generation is still somehow bugged
         print(f"START STEP {i} at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         BQC_executor.run(step_number=i, evolutionary_point_generation=True)

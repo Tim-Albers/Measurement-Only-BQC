@@ -438,10 +438,11 @@ s = [] #decoded measurment MBQC outcomes (= b(j)+r(j) with b(j) meas results as 
 run_times = []
 attempts = []
 def run_experiment(I, G, fibre_length, mbqc_bases, opt_params, run_amount):
+    total_attempts = []
     resses= []
     for i in range(run_amount):
-        attempts.clear()
         # Clear everything 
+        attempts.clear()
         ns.sim_reset()
         m.clear()
         theta.clear()
@@ -460,15 +461,15 @@ def run_experiment(I, G, fibre_length, mbqc_bases, opt_params, run_amount):
         ns.sim_run()
         run_times.append(1000*ns.sim_time(ns.MICROSECOND))
         resses.append(s[-1]) # Decoded outcome of the final measurement is the output of the computation
+        total_attempts.append(attempts[-1])
     result = sum(resses)/len(resses) # Average of per-iteration outcomes
     confidence = np.sqrt(np.log(2/0.05)/(2*run_amount)) # 95% confidence interval
     avg_runtime =  np.average(run_times) # Average runtime in ms
-    # print(f"--------------------\nLength: {fibre_length} km:\nResult: {result} +/- {confidence}")
+    avg_attempts = np.average(total_attempts) # Average number of attempts
     print(f"{result},{avg_runtime}")
-    return result, avg_runtime
+    return result, avg_runtime, avg_attempts
 
 def main():
-    t1 = time.time()
     # Parse the input argument
     parser = ArgumentParser()
     parser.add_argument('--opt_params', type=str, help="Input dictionary as a string", required=False)
@@ -492,12 +493,7 @@ def main():
     I = 2
     G = [[0,1]]
     MBQC_bases = [1.5707, -1.5708]
-    # print("Running experiment...")
     run_experiment(I=I, G=G, fibre_length=steady_params["channel_length"], mbqc_bases=MBQC_bases, opt_params=args.opt_params, run_amount=args.run_amount)
-    t2 = time.time()
-    # print("Runs: ", args.run_amount)
-    # print(convert_seconds(t2-t1))
-    # print("--------------------")
 
 def convert_seconds(total_seconds):
     days = total_seconds // (24 * 3600)  # Calculate the number of days

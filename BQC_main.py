@@ -21,7 +21,7 @@ def BQC_pre():
                                  venv="/home/timalbers/CODE/venv", #This venv should contain all dependencies for the simulation script (which can be installed using the requirements.txt)
                                  slurm_venv="/home/timalbers/venv3.10", #This venv should contain all dependencies for YOTSE (which can be installed with Poetry)
                                  program_name='costfunction.py',
-                                 command_line_arguments={"--filebasename": ''},
+                                 command_line_arguments={"--filebasename": 'output'},
                                  analysis_script="analyse_function_output.py",
                                  executor="python"
                                  #files_needed=["steady_params.yaml"] # todo not implemented

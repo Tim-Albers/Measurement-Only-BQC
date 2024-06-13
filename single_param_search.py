@@ -17,7 +17,7 @@ def convert_seconds(total_seconds, factor=1):
     total_seconds %= 3600                # Update total_seconds to the remainder
     minutes = total_seconds // 60        # Calculate the number of minutes
     seconds = total_seconds % 60         # Calculate the number of remaining seconds
-    return f"{int(days)}d, {int(hours)}h, {int(minutes)}m, {round(seconds, 2)}s"
+    return f"{int(days)}d{int(hours)}h{int(minutes)}m{round(seconds, 2)}s"
 
 steady_param_yaml = "/home/timalbers/CODE/Measurement-Only-BQC/steady_params.yaml"  # Path to yaml file containing the paramters that are not varied over
 
@@ -77,15 +77,17 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
     else:
         print('No valid values found in for finding average outcome')
 
-def run_simulation(p_loss):
+def run_simulation(param):
     script_path = '/home/timalbers/CODE/Measurement-Only-BQC/Simulationscript.py'
     # Ensure all required parameters are present in opt_params
     opt_params = param_base_dict.copy()
-    opt_params['p_loss_init'] = float(p_loss)
+    #opt_params['p_loss_init'] = float(p_loss)
+    opt_params['coherence_time'] = float(param)
     avg_outcome, avg_runtime = find_error_prob(15000, 15000, opt_params, script_path)
-    return p_loss, avg_outcome, avg_runtime
+    return param, avg_outcome, avg_runtime
 
 p_loss_init_values = np.linspace(0.01, 0.8846, 70)
+coherence_time_values = np.linspace(30000000, 62000000, 30)
 
 if __name__ == '__main__':
     print(f"Starting simulation at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -94,8 +96,8 @@ if __name__ == '__main__':
     confidence = np.sqrt(np.log(2/0.05)/(2*run_amount)) # 95% confidence interval
     # Create a pool of workers equal to the number of available cores
     with Pool(processes=80) as pool:
-        results = pool.map(run_simulation, p_loss_init_values)
+        results = pool.map(run_simulation, coherence_time_values)
     
-    for p_loss, avg_outcome, avg_runtime in results:
-        print(f"p_loss_init: {p_loss}, successprob: {avg_outcome} +/- {confidence}, avg simulated time: {convert_seconds(avg_runtime, 1e6)} for {num_runs} runs")
+    for param, avg_outcome, avg_runtime in results:
+        print(f"coherence_time: {param}, successprob: {avg_outcome} +/- {confidence}, avg simulated time: {convert_seconds(avg_runtime, 1e6)} for {num_runs} runs")
     print(f"Simulation finished at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

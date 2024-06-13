@@ -88,7 +88,7 @@ def run_simulation(param):
     #opt_params['p_loss_init'] = float(p_loss)
     opt_params['coherence_time'] = float(param)
     avg_outcome, avg_runtime, avg_attempts = find_error_prob(15, 15, opt_params, script_path)
-    return param, avg_outcome, avg_runtime
+    return param, avg_outcome, avg_runtime, avg_attempts
 
 p_loss_init_values = np.linspace(0.01, 0.8846, 70)
 coherence_time_values = np.linspace(30000000, 62000000, 10)

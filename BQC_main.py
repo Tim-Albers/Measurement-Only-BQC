@@ -25,6 +25,7 @@ def BQC_pre():
                                  analysis_script="analyse_function_output.py",
                                  executor="python",
                                  output_dir_name="output",
+                                 output_extension="csv"
                                  #files_needed=["steady_params.yaml"] # todo not implemented
                                  ),
         parameters=[

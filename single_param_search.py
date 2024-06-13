@@ -112,6 +112,11 @@ if __name__ == '__main__':
     with Pool(processes=80) as pool:
         results = pool.map(run_simulation, coherence_time_values)
 
+    # Print results to console
+    for param, avg_outcome, avg_runtime, avg_attempts in results:
+        print(f"coherence_time: {param}, successprob: {avg_outcome} +/- {confidence}, avg attempts: {avg_attempts},  avg simulated time: {convert_seconds(avg_runtime, 1e6)} for {num_runs} runs")
+    print(f"Simulation finished at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+
     # Ensure the output directory exists
     output_dir = os.path.join('output', args.uid)
     ensure_directory_exists(output_dir)
@@ -125,8 +130,3 @@ if __name__ == '__main__':
         for param, avg_outcome, avg_runtime, avg_attempts in results:
             writer.writerow({'param': param, 'avg_outcome': avg_outcome, 'avg_runtime': avg_runtime, 'avg_attempts': avg_attempts})
     print(f"Results saved to {csv_file_path}")
-
-    # Print results to console
-    for param, avg_outcome, avg_runtime, avg_attempts in results:
-        print(f"coherence_time: {param}, successprob: {avg_outcome} +/- {confidence}, avg attempts: {avg_attempts},  avg simulated time: {convert_seconds(avg_runtime, 1e6)} for {num_runs} runs")
-    print(f"Simulation finished at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

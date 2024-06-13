@@ -83,7 +83,7 @@ def run_simulation(param):
     opt_params = param_base_dict.copy()
     #opt_params['p_loss_init'] = float(p_loss)
     opt_params['coherence_time'] = float(param)
-    avg_outcome, avg_runtime = find_error_prob(15000, 15000, opt_params, script_path)
+    avg_outcome, avg_runtime = find_error_prob(15, 15, opt_params, script_path)
     return param, avg_outcome, avg_runtime
 
 p_loss_init_values = np.linspace(0.01, 0.8846, 70)
@@ -91,8 +91,8 @@ coherence_time_values = np.linspace(30000000, 62000000, 30)
 
 if __name__ == '__main__':
     print(f"Starting simulation at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    num_runs = 15000
-    run_amount = 15000
+    num_runs = 15
+    run_amount = 15
     confidence = np.sqrt(np.log(2/0.05)/(2*run_amount)) # 95% confidence interval
     # Create a pool of workers equal to the number of available cores
     with Pool(processes=80) as pool:

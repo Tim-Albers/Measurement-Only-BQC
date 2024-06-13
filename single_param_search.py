@@ -118,7 +118,7 @@ if __name__ == '__main__':
     print(f"Simulation finished at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
     # Ensure the output directory exists
-    output_dir = os.path.join('output', args.uid)
+    output_dir = os.path.join(args.uid, 'output')
     ensure_directory_exists(output_dir)
 
     # Save results to a CSV file

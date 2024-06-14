@@ -120,6 +120,7 @@ def main():
         print(f"START STEP {i} at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         BQC_executor.run(step_number=i, evolutionary_point_generation=True)
         print(f"END STEP {i} at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print("----------------------------------------------------------------------------------")
 
     solution = BQC_executor.optimizer.suggest_best_solution()
     print(f"Optimization parameters: {experiment.opt_info_list[0].opt_parameters}\n")

@@ -40,7 +40,7 @@ def BQC_pre():
             Parameter(
                 name="coherence_time",
                 param_range=[30000000, 62000000],
-                number_points=4,
+                number_points=3,
                 distribution="uniform",
                 constraints={'low': 30000000, 'high': 62000000},
                 weights=None,

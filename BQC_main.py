@@ -40,7 +40,7 @@ def BQC_pre():
             Parameter(
                 name="coherence_time",
                 param_range=[30000000, 62000000],
-                number_points=4,
+                number_points=3,
                 distribution="uniform",
                 constraints={'low': 30000000, 'high': 62000000},
                 weights=None,
@@ -120,6 +120,7 @@ def main():
         print(f"START STEP {i} at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         BQC_executor.run(step_number=i, evolutionary_point_generation=True)
         print(f"END STEP {i} at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print("----------------------------------------------------------------------------------")
 
     solution = BQC_executor.optimizer.suggest_best_solution()
     print(f"Optimization parameters: {experiment.opt_info_list[0].opt_parameters}\n")

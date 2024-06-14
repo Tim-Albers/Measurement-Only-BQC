@@ -29,10 +29,10 @@ def BQC_pre():
         parameters=[
             Parameter(
                 name="p_loss_init",
-                param_range=[0.8846,0.9],
+                param_range=[0.8675,0.92],
                 number_points=2,
                 distribution="uniform",
-                constraints={'low': 0.8846, 'high': 0.95},
+                constraints={'low': 0.8675, 'high': 0.92},
                 weights=None,   # todo not implemented
                 parameter_active=True,
                 param_type="continuous"
@@ -82,7 +82,7 @@ def BQC_pre():
             OptimizationInfo(
                 name="GA",                      # name of the optimization algorithm (Genetic Algorithm)
                 opt_parameters={
-                    "num_generations": 20,       # number of iterations of the algorithm
+                    "num_generations": 15,       # number of iterations of the algorithm
                     #"num_points": 10,           # number of points per param to re-create , now determined by initial
                     "num_parents_mating": 8,    # number of points taken of each generation to go onto the next generation
                     "mutation_probability": .2, # probability of mutation

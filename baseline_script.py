@@ -6,56 +6,64 @@ import yaml
 from yaml.loader import SafeLoader
 import subprocess
 import math
+from concurrent.futures import ProcessPoolExecutor, as_completed
+
+def run_simulation(command):
+    try:
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = process.communicate()
+        if process.returncode == 0:
+            meas_outcome, runtime, attempt = stdout.decode().strip().split(',')
+            return float(meas_outcome), float(runtime), float(attempt)
+        else:
+            error_mes = stderr.decode()
+            print(f"Error running simulation script:\n {error_mes}")
+            return None
+    except subprocess.CalledProcessError as e:
+        print(f"Error running the script: {e}")
+        return None
 
 def find_error_prob(num_runs, run_amount, opt_params, script_path):
     outcomes = []
     runtimes = []
     attempts = []
-    iterations = math.floor(num_runs/run_amount)
+    iterations = math.floor(num_runs / run_amount)
     if iterations == 0:
         raise IterationError()
-    last_bit = num_runs - iterations*run_amount
-    command = ['python', str(script_path), "--opt_params", str(opt_params), "--run_amount", str(run_amount)]
-    for k in range(iterations):
-        try:
-            process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            stdout, stderr = process.communicate()
-            if process.returncode == 0:
-                meas_outcome, runtime, attempt = stdout.decode().split(',')
-                outcomes.append(float(meas_outcome))
-                runtimes.append(float(runtime))
-                attempts.append(float(attempt))
+    last_bit = num_runs - iterations * run_amount
 
-            else:
-                error_mes = stderr.decode()
-                print(f"Error running simulation script:\n {error_mes}")
-        except subprocess.CalledProcessError as e:
-            print(f"Error running the script: {e}")
-        print(f"Iteration {k} of {iterations} complete")
+    command = ['python', str(script_path), "--opt_params", str(opt_params), "--run_amount", str(run_amount)]
+    commands = [command] * iterations
+
     if last_bit != 0:
-        command = ['python', str(script_path), "--opt_params", str(opt_params), "--run_amount", str(last_bit)]
-        try:
-            process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            stdout, stderr = process.communicate()
-            if process.returncode == 0:
-                meas_outcome, runtime, attempt = stdout.decode().split(',')
-                outcomes.append(float(meas_outcome))
-                runtimes.append(float(runtime))
-                attempts.append(float(attempt))
-            else:
-                error_mes = stderr.decode()
-                print(f"Error running simulation script:\n {error_mes}")
-        except subprocess.CalledProcessError as e:
-            print(f"Error running the script: {e}")
-    avg_outcome = sum(outcomes)/len(outcomes)
-    avg_runtime = sum(runtimes)/len(runtimes)
-    avg_attempts = sum(attempts)/len(attempts)
-    print("succesprob: ", avg_outcome)
+        last_command = ['python', str(script_path), "--opt_params", str(opt_params), "--run_amount", str(last_bit)]
+        commands.append(last_command)
+
+    with ProcessPoolExecutor() as executor:
+        futures = {executor.submit(run_simulation, cmd): i for i, cmd in enumerate(commands)}
+        for future in as_completed(futures):
+            i = futures[future]
+            try:
+                result = future.result()
+                if result:
+                    meas_outcome, runtime, attempt = result
+                    outcomes.append(meas_outcome)
+                    runtimes.append(runtime)
+                    attempts.append(attempt)
+                print(f"Iteration {i} complete")
+            except Exception as e:
+                print(f"Iteration {i} generated an exception: {e}")
+
+    avg_outcome = sum(outcomes) / len(outcomes) if outcomes else None
+    avg_runtime = sum(runtimes) / len(runtimes) if runtimes else None
+    avg_attempts = sum(attempts) / len(attempts) if attempts else None
+
+    print("successprob: ", avg_outcome)
     if avg_outcome is not None:
         return avg_outcome, avg_runtime, avg_attempts
     else:
         print('No valid values found in for finding average outcome')
-
+        return None, None, None
 
 if __name__ == "__main__":
     # Parse the input argument
@@ -70,4 +78,3 @@ if __name__ == "__main__":
         opt_params = yaml.load(file, Loader=SafeLoader)
     script_path = 'Simulationscript.py'
     find_error_prob(num_runs, run_amount, opt_params, script_path)
-    

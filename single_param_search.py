@@ -122,8 +122,8 @@ if __name__ == '__main__':
         print(f"Parameter {args.parameter} not recognized")
 
     print(f"Starting simulation at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    num_runs = 18444
-    run_amount = 9222
+    num_runs = 1000
+    run_amount = 1000
     confidence = np.sqrt(np.log(2/0.05)/(2*num_runs)) # 95% confidence interval
     # Create a pool of workers equal to the number of available cores
     with Pool(processes=80) as pool:

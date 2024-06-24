@@ -92,4 +92,4 @@ if __name__ == "__main__":
     t2 = time.time()
     print(f"number of runs: {num_runs}, run amount: {run_amount}")
     print(convert_seconds(t2-t1))
-    print(f"Average time per run: {(t2-t1)/num_runs} seconds")
+    print(f"Average time per run: {(t2-t1)/run_amount} seconds")

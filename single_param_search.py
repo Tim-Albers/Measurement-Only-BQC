@@ -83,12 +83,12 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
     else:
         print('No valid values found in for finding average outcome')
 
-def run_simulation(param):
+def run_simulation(param_name: str, param_values):
     script_path = '/home/timalbers/CODE/Measurement-Only-BQC/Simulationscript.py'
     # Ensure all required parameters are present in opt_params
     opt_params = param_base_dict.copy()
     #opt_params['p_loss_init'] = float(p_loss)
-    opt_params['coherence_time'] = float(param)
+    opt_params[param_name] = float(param_values)
     avg_outcome, avg_runtime, avg_attempts = find_error_prob(15000, 15000, opt_params, script_path)
     return param, avg_outcome, avg_runtime, avg_attempts
 
@@ -105,6 +105,8 @@ def ensure_directory_exists(directory):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate JSON file with metadata.')
     parser.add_argument('--parameter', type=str, help='name of the parameter', required=True)
+    parser.add_argument('--num_runs', type=int, help='number of runs to be executed', required=True)
+    parser.add_argument('--run_amount', type=int, help='number of runs per iteration', required=True)
     parser.add_argument('--uid',type=str, help='UID for the folder and JSON file', required=True)
     args = parser.parse_args()
 
@@ -127,7 +129,7 @@ if __name__ == '__main__':
     confidence = np.sqrt(np.log(2/0.05)/(2*num_runs)) # 95% confidence interval
     # Create a pool of workers equal to the number of available cores
     with Pool(processes=80) as pool:
-        results = pool.map(run_simulation, param_values)
+        results = pool.map(run_simulation(args.parameter), param_values)
 
     # Print results to console
     for param, avg_outcome, avg_runtime, avg_attempts in results:

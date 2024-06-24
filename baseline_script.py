@@ -68,6 +68,6 @@ if __name__ == "__main__":
     # Load the optimization parameters
     with open('baseline.yaml') as file:
         opt_params = yaml.load(file, Loader=SafeLoader)
-    script_path = 'Simulation_script.py'
+    script_path = 'Simulationscript.py'
     find_error_prob(num_runs, run_amount, opt_params, script_path)
     

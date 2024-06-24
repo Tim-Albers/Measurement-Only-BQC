@@ -88,7 +88,7 @@ def run_simulation(param):
     # Ensure all required parameters are present in opt_params
     opt_params = param_base_dict.copy()
     #opt_params['p_loss_init'] = float(p_loss)
-    opt_params['emission_fidelity'] = float(param)
+    opt_params['single_qubit_depolar_prob'] = float(param)
     avg_outcome, avg_runtime, avg_attempts = find_error_prob(15000, 7500, opt_params, script_path)
     return param, avg_outcome, avg_runtime, avg_attempts
 
@@ -127,11 +127,11 @@ if __name__ == '__main__':
     confidence = np.sqrt(np.log(2/0.05)/(2*num_runs)) # 95% confidence interval
     # Create a pool of workers equal to the number of available cores
     with Pool(processes=80) as pool:
-        results = pool.map(run_simulation, emission_fidelity_values) #EDIT THIS LINE TO CHANGE THE PARAMETER
+        results = pool.map(run_simulation, single_qubit_depolar_prob_values) #EDIT THIS LINE TO CHANGE THE PARAMETER
 
     # Print results to console
     for param, avg_outcome, avg_runtime, avg_attempts in results:
-        print(f"emission_fidelity: {param}, successprob: {avg_outcome} +/- {confidence}, avg attempts: {avg_attempts},  avg simulated time: {convert_seconds(avg_runtime, 1e6)} for {num_runs} runs")
+        print(f"single_qubit_depolar_prob: {param}, successprob: {avg_outcome} +/- {confidence}, avg attempts: {avg_attempts},  avg simulated time: {convert_seconds(avg_runtime, 1e6)} for {num_runs} runs")
     print(f"Simulation finished at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
     # Ensure the output directory exists
@@ -141,9 +141,9 @@ if __name__ == '__main__':
     # Save results to a CSV file
     csv_file_path = os.path.join(output_dir, 'results.csv')
     with open(csv_file_path, 'w', newline='') as csvfile:
-        fieldnames = ['emission_fidelity', 'avg_outcome', 'avg_runtime', 'avg_attempts']
+        fieldnames = ['single_qubit_depolar_prob', 'avg_outcome', 'avg_runtime', 'avg_attempts']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for param, avg_outcome, avg_runtime, avg_attempts in results:
-            writer.writerow({'emission_fidelity': param, 'avg_outcome': avg_outcome, 'avg_runtime': avg_runtime, 'avg_attempts': avg_attempts})
+            writer.writerow({'single_qubit_depolar_prob': param, 'avg_outcome': avg_outcome, 'avg_runtime': avg_runtime, 'avg_attempts': avg_attempts})
     print(f"Results saved to {csv_file_path}")

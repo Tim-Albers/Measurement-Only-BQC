@@ -7,6 +7,7 @@ from yaml.loader import SafeLoader
 import subprocess
 import math
 from concurrent.futures import ProcessPoolExecutor, as_completed
+import time
 
 def convert_seconds(total_seconds):
     days = total_seconds // (24 * 3600)  # Calculate the number of days
@@ -91,3 +92,4 @@ if __name__ == "__main__":
     t2 = time.time()
     print(f"number of runs: {num_runs}, run amount: {run_amount}")
     print(convert_seconds(t2-t1))
+    print(f"Average time per run: {(t2-t1)/num_runs} seconds")

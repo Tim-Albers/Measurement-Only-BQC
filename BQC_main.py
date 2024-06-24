@@ -82,7 +82,7 @@ def BQC_pre():
             OptimizationInfo(
                 name="GA",                      # name of the optimization algorithm (Genetic Algorithm)
                 opt_parameters={
-                    "num_generations": 5,       # number of iterations of the algorithm
+                    "num_generations": 20,       # number of iterations of the algorithm
                     #"num_points": 10,           # number of points per param to re-create , now determined by initial
                     "num_parents_mating": 8,    # number of points taken of each generation to go onto the next generation
                     "mutation_probability": .2, # probability of mutation

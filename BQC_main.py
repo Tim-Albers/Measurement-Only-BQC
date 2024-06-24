@@ -59,10 +59,10 @@ def BQC_pre():
             ),
             Parameter(
                 name="ms_depolar_prob",
-                param_range=[0.1, 0.18],
+                param_range=[0.1, 0.2],
                 number_points=3,
                 distribution="uniform",
-                constraints={'low': 0.1, 'high': 0.18},
+                constraints={'low': 0.1, 'high': 0.2},
                 weights=None,
                 parameter_active=True,
                 param_type="continuous"

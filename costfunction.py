@@ -200,5 +200,5 @@ if __name__ == "__main__":
     with open(csv_filename, mode='w') as csv_file:
         print('writing to csv...', csv_filename)
         csv_writer = csv.writer(csv_file, delimiter=' ')
-        csv_writer.writerow(['C', 'p_loss_init', 'coherence_time', 'single_qubit_depolar_prob', 'ms_depolar_prob', 'emission_fidelity', 'error_prob', 'num_runs', 'average_runtime [ns]'])
+        csv_writer.writerow(['C', 'p_loss_init', 'coherence_time', 'single_qubit_depolar_prob', 'ms_depolar_prob', 'emission_fidelity', 'succes_prob', 'num_runs', 'average_runtime [ns]'])
         csv_writer.writerow([output_value, args.p_loss_init, args.coherence_time, args.single_qubit_depolar_prob, args.ms_depolar_prob, args.emission_fidelity, succes_prob, num_runs, avg_runtime])

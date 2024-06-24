@@ -185,7 +185,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     parameter_values = [args.p_loss_init, args.coherence_time, args.single_qubit_depolar_prob, args.ms_depolar_prob, args.emission_fidelity]
     num_runs = 18444 #20000  #18444 #73777 # Times the simulation is repeated - determines confidence interval of average outcome based on Hoeffding's bound
-    run_amount =  9222 #10000 # The simulation is run in batches of run_amount to limit memory usage
+    run_amount = 9222 #10000 # The simulation is run in batches of run_amount to limit memory usage
     script_path = '/home/timalbers/CODE/Measurement-Only-BQC/Simulationscript.py'
     baseline_path = '/home/timalbers/CODE/Measurement-Only-BQC/baseline.yaml'
     # Run the "simulation"

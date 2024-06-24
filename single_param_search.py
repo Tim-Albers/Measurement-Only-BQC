@@ -94,6 +94,9 @@ def run_simulation(param):
 
 p_loss_init_values = np.linspace(0.01, 0.8846, 70)
 coherence_time_values = np.linspace(10000000, 62000000, 40)
+single_qubit_depolar_prob_values = np.linspace(0.02, 0.821, 40)
+ms_depolar_prob_values = np.linspace(0.1, 0.754, 40)
+emission_fidelity_values = np.linspace(0.794, 0.947, 40)
 
 def ensure_directory_exists(directory):
     if not os.path.exists(directory):
@@ -110,7 +113,7 @@ if __name__ == '__main__':
     confidence = np.sqrt(np.log(2/0.05)/(2*run_amount)) # 95% confidence interval
     # Create a pool of workers equal to the number of available cores
     with Pool(processes=80) as pool:
-        results = pool.map(run_simulation, coherence_time_values)
+        results = pool.map(run_simulation, coherence_time_values) #EDIT THIS LINE TO CHANGE THE PARAMETER
 
     # Print results to console
     for param, avg_outcome, avg_runtime, avg_attempts in results:

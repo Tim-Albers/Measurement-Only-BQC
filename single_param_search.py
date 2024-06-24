@@ -89,7 +89,7 @@ def run_simulation(param):
     opt_params = param_base_dict.copy()
     #opt_params['p_loss_init'] = float(p_loss)
     opt_params['ms_depolar_prob'] = float(param)
-    avg_outcome, avg_runtime, avg_attempts = find_error_prob(10, 5, opt_params, script_path)
+    avg_outcome, avg_runtime, avg_attempts = find_error_prob(15000, 7500, opt_params, script_path)
     return param, avg_outcome, avg_runtime, avg_attempts
 
 p_loss_init_values = np.linspace(0.01, 0.8846, 70)
@@ -122,8 +122,8 @@ if __name__ == '__main__':
     #     print(f"Parameter {args.parameter} not recognized")
 
     print(f"Starting simulation at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    num_runs = 10
-    run_amount = 5
+    num_runs = 15000
+    run_amount = 7500
     confidence = np.sqrt(np.log(2/0.05)/(2*num_runs)) # 95% confidence interval
     # Create a pool of workers equal to the number of available cores
     with Pool(processes=80) as pool:

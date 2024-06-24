@@ -110,13 +110,13 @@ if __name__ == '__main__':
 
     if args.parameter == 'p_loss_init':
         param_values = p_loss_init_values
-    elif args.parameter == 'coherence_time':
+    if args.parameter == 'coherence_time':
         param_values = coherence_time_values
-    elif args.parameter == 'single_qubit_depolar_prob':
+    if args.parameter == 'single_qubit_depolar_prob':
         param_values = single_qubit_depolar_prob_values
-    elif args.parameter == 'ms_depolar_prob':
+    if args.parameter == 'ms_depolar_prob':
         param_values = ms_depolar_prob_values
-    elif args.parameter == 'emission_fidelity':
+    if args.parameter == 'emission_fidelity':
         param_values = emission_fidelity_values
     else:
         print(f"Parameter {args.parameter} not recognized")

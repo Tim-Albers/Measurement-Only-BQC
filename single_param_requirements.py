@@ -94,7 +94,7 @@ def run_simulation(param):
 
 p_loss_init_values = np.linspace(0.01, 0.8846, 70)
 coherence_time_values = np.linspace(10000000, 62000000, 40)
-single_qubit_depolar_prob_values = np.linspace(0.02, 0.821, 40)
+single_qubit_depolar_prob_values = np.linspace(0.02, 0.04, 40)
 ms_depolar_prob_values = np.linspace(0.1, 0.754, 40)
 emission_fidelity_values = np.linspace(0.794, 0.947, 40)
 

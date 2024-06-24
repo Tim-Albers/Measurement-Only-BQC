@@ -127,7 +127,7 @@ if __name__ == '__main__':
     confidence = np.sqrt(np.log(2/0.05)/(2*num_runs)) # 95% confidence interval
     # Create a pool of workers equal to the number of available cores
     with Pool(processes=80) as pool:
-        results = pool.map(run_simulation(args.parameter), param_values)
+        results = pool.map(run_simulation(args.parameter, param_values), param_values)
 
     # Print results to console
     for param, avg_outcome, avg_runtime, avg_attempts in results:

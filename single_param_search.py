@@ -141,7 +141,7 @@ if __name__ == '__main__':
     # Save results to a CSV file
     csv_file_path = os.path.join(output_dir, 'results.csv')
     with open(csv_file_path, 'w', newline='') as csvfile:
-        fieldnames = [args.parameter, 'avg_outcome', 'avg_runtime', 'avg_attempts']
+        fieldnames = ['ms_depolar_prob', 'avg_outcome', 'avg_runtime', 'avg_attempts']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for param, avg_outcome, avg_runtime, avg_attempts in results:

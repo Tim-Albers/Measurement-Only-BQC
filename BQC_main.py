@@ -32,7 +32,7 @@ def BQC_pre():
                 param_range=[0.7675,0.92],
                 number_points=4,
                 distribution="uniform",
-                constraints={'low': 0.8675, 'high': 0.92},
+                constraints={'low': 0.7675, 'high': 0.92},
                 weights=None,   # todo not implemented
                 parameter_active=True,
                 param_type="continuous"

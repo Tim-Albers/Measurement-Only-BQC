@@ -29,8 +29,8 @@ def BQC_pre():
         parameters=[
             Parameter(
                 name="p_loss_init",
-                param_range=[0.8675,0.92],
-                number_points=2,
+                param_range=[0.7675,0.92],
+                number_points=4,
                 distribution="uniform",
                 constraints={'low': 0.8675, 'high': 0.92},
                 weights=None,   # todo not implemented
@@ -39,40 +39,40 @@ def BQC_pre():
             ),
             Parameter(
                 name="coherence_time",
-                param_range=[30000000, 62000000],
-                number_points=3,
+                param_range=[31000000, 62000000],
+                number_points=4,
                 distribution="uniform",
-                constraints={'low': 30000000, 'high': 62000000},
+                constraints={'low': 31000000, 'high': 62000000},
                 weights=None,
                 parameter_active=True,
                 param_type="continuous"
             ),
             Parameter(
                 name="single_qubit_depolar_prob",
-                param_range=[0.0199, 0.05],
-                number_points=2,
+                param_range=[0.01, 0.821],
+                number_points=4,
                 distribution="uniform",
-                constraints={'low': 0.0199, 'high': 0.05},
+                constraints={'low': 0.01, 'high': 0.821},
                 weights=None,
                 parameter_active=True,
                 param_type="continuous"
             ),
             Parameter(
                 name="ms_depolar_prob",
-                param_range=[0.09, 0.5],
-                number_points=3,
+                param_range=[0.1, 0.754],
+                number_points=4,
                 distribution="uniform",
-                constraints={'low': 0.09, 'high': 0.5},
+                constraints={'low': 0.1, 'high': 0.754},
                 weights=None,
                 parameter_active=True,
                 param_type="continuous"
             ),
             Parameter(
                 name="emission_fidelity",
-                param_range=[0.5, 0.947],
-                number_points=3,
+                param_range=[0.794, 0.947],
+                number_points=4,
                 distribution="uniform",
-                constraints={'low': 0.5, 'high': 0.947},
+                constraints={'low': 0.794, 'high': 0.947},
                 weights=None,
                 parameter_active=True,
                 param_type="continuous"
@@ -82,7 +82,7 @@ def BQC_pre():
             OptimizationInfo(
                 name="GA",                      # name of the optimization algorithm (Genetic Algorithm)
                 opt_parameters={
-                    "num_generations": 15,       # number of iterations of the algorithm
+                    "num_generations": 20,       # number of iterations of the algorithm
                     #"num_points": 10,           # number of points per param to re-create , now determined by initial
                     "num_parents_mating": 8,    # number of points taken of each generation to go onto the next generation
                     "mutation_probability": .2, # probability of mutation

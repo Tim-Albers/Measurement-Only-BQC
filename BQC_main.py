@@ -49,20 +49,20 @@ def BQC_pre():
             ),
             Parameter(
                 name="single_qubit_depolar_prob",
-                param_range=[0.01, 0.5],
-                number_points=4,
+                param_range=[0.01, 0.03],
+                number_points=3,
                 distribution="uniform",
-                constraints={'low': 0.01, 'high': 0.5},
+                constraints={'low': 0.01, 'high': 0.03},
                 weights=None,
                 parameter_active=True,
                 param_type="continuous"
             ),
             Parameter(
                 name="ms_depolar_prob",
-                param_range=[0.1, 0.2],
+                param_range=[0.1, 0.18],
                 number_points=3,
                 distribution="uniform",
-                constraints={'low': 0.1, 'high': 0.2},
+                constraints={'low': 0.1, 'high': 0.18},
                 weights=None,
                 parameter_active=True,
                 param_type="continuous"

@@ -104,8 +104,22 @@ def ensure_directory_exists(directory):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate JSON file with metadata.')
-    parser.add_argument('--uid', help='UID for the folder and JSON file', required=True)
+    parser.add_argument('--parameter', type=str, help='name of the parameter', required=True)
+    parser.add_argument('--uid',type=str, help='UID for the folder and JSON file', required=True)
     args = parser.parse_args()
+
+    if args.parameter == 'p_loss_init':
+        param_values = p_loss_init_values
+    elif args.parameter == 'coherence_time':
+        param_values = coherence_time_values
+    elif args.parameter == 'single_qubit_depolar_prob':
+        param_values = single_qubit_depolar_prob_values
+    elif args.parameter == 'ms_depolar_prob':
+        param_values = ms_depolar_prob_values
+    elif args.parameter == 'emission_fidelity':
+        param_values = emission_fidelity_values
+    else:
+        print(f"Parameter {args.parameter} not recognized")
 
     print(f"Starting simulation at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     num_runs = 15000
@@ -113,11 +127,11 @@ if __name__ == '__main__':
     confidence = np.sqrt(np.log(2/0.05)/(2*run_amount)) # 95% confidence interval
     # Create a pool of workers equal to the number of available cores
     with Pool(processes=80) as pool:
-        results = pool.map(run_simulation, coherence_time_values) #EDIT THIS LINE TO CHANGE THE PARAMETER
+        results = pool.map(run_simulation, param_values)
 
     # Print results to console
     for param, avg_outcome, avg_runtime, avg_attempts in results:
-        print(f"coherence_time: {param}, successprob: {avg_outcome} +/- {confidence}, avg attempts: {avg_attempts},  avg simulated time: {convert_seconds(avg_runtime, 1e6)} for {num_runs} runs")
+        print(f"{args.parameter}: {param}, successprob: {avg_outcome} +/- {confidence}, avg attempts: {avg_attempts},  avg simulated time: {convert_seconds(avg_runtime, 1e6)} for {num_runs} runs")
     print(f"Simulation finished at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
     # Ensure the output directory exists
@@ -127,9 +141,9 @@ if __name__ == '__main__':
     # Save results to a CSV file
     csv_file_path = os.path.join(output_dir, 'results.csv')
     with open(csv_file_path, 'w', newline='') as csvfile:
-        fieldnames = ['param', 'avg_outcome', 'avg_runtime', 'avg_attempts']
+        fieldnames = [args.parameter, 'avg_outcome', 'avg_runtime', 'avg_attempts']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for param, avg_outcome, avg_runtime, avg_attempts in results:
-            writer.writerow({'param': param, 'avg_outcome': avg_outcome, 'avg_runtime': avg_runtime, 'avg_attempts': avg_attempts})
+            writer.writerow({args.parameter: param, 'avg_outcome': avg_outcome, 'avg_runtime': avg_runtime, 'avg_attempts': avg_attempts})
     print(f"Results saved to {csv_file_path}")

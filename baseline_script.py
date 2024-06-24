@@ -8,6 +8,15 @@ import subprocess
 import math
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
+def convert_seconds(total_seconds):
+    days = total_seconds // (24 * 3600)  # Calculate the number of days
+    total_seconds %= (24 * 3600)         # Update total_seconds to the remainder
+    hours = total_seconds // 3600        # Calculate the number of hours
+    total_seconds %= 3600                # Update total_seconds to the remainder
+    minutes = total_seconds // 60        # Calculate the number of minutes
+    seconds = total_seconds % 60         # Calculate the number of remaining seconds
+    return f"Runtime: {int(days)} days, {int(hours)} hours, {int(minutes)} minutes, {round(seconds, 2)} seconds"
+
 def run_simulation(command):
     try:
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -66,6 +75,7 @@ def find_error_prob(num_runs, run_amount, opt_params, script_path):
         return None, None, None
 
 if __name__ == "__main__":
+    t1 = time.time()
     # Parse the input argument
     parser = ArgumentParser()
     parser.add_argument('--num_runs', type=int, help="Number of runs to be executed", required=True)
@@ -78,3 +88,6 @@ if __name__ == "__main__":
         opt_params = yaml.load(file, Loader=SafeLoader)
     script_path = 'Simulationscript.py'
     find_error_prob(num_runs, run_amount, opt_params, script_path)
+    t2 = time.time()
+    print(f"number of runs: {num_runs}, run amount: {run_amount}")
+    print(convert_seconds(t2-t1))

@@ -29,10 +29,10 @@ def BQC_pre():
         parameters=[
             Parameter(
                 name="p_loss_init",
-                param_range=[0.7675,0.92],
+                param_range=[0.8675,0.92],
                 number_points=3,
                 distribution="uniform",
-                constraints={'low': 0.7675, 'high': 0.92},
+                constraints={'low': 0.8675, 'high': 0.92},
                 weights=None,   # todo not implemented
                 parameter_active=True,
                 param_type="continuous"
@@ -59,7 +59,7 @@ def BQC_pre():
             ),
             Parameter(
                 name="ms_depolar_prob",
-                param_range=[0.1, 0.2],
+                param_range=[0.05, 0.2],
                 number_points=3,
                 distribution="uniform",
                 constraints={'low': 0.1, 'high': 0.2},
